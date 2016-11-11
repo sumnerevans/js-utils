@@ -38,3 +38,60 @@ Object.prototype.each = function(fn, scope) {
         }
     }
 };
+
+/*
+ * Object.prototype.equals: checks two objects and compares their keys for equality recursively
+ *
+ * Usage: obj.equals(otherObj);
+ *
+ * Parameters: rhs - the object to compare
+ *
+ * Example:
+ *
+ *     var obj = {
+ *         a: 3,
+ *         b: {
+ *             c: 4
+ *         }
+ *     };
+ *
+ *     obj.equals({ a: 3, b: { c: 4 } }); // true
+ *
+ *     // you can overload the equals function
+ *     obj.b.equals = function() { return false; }
+ *     obj.equals({ a: 3, b: { c: 4 } }); // false
+ *
+ */
+Object.prototype.equals = function(rhs) {
+    if (typeof rhs !== typeof this) {
+        return false;
+    }
+
+    var checked = [],
+        isEqual = true;
+
+    this.each(function(key) {
+        checked.push(key);
+
+        if (rhs[key] === null || (this[key] !== rhs[key] && !this[key].equals(rhs[key]))) {
+            isEqual = false;
+            return false; // exit iteration
+        }
+    }, this);
+
+    if (!isEqual) {
+         return false;
+    }
+
+    rhs.each(function(key) {
+        if (checked.contains(key)) {
+             return; // go to the next item in the object
+        }
+
+        // If we got here, then the rhs contains a key that is not in this.
+        isEqual = false;
+        return false;
+    }, this);
+
+    return isEqual;
+};
