@@ -29,14 +29,22 @@
  *
  */
 Object.prototype.each = function(fn, scope) {
-    for (var index in this) {
-        if (this.hasOwnProperty(index)) {
-            if (fn.apply(scope, [index, this[index], this]) === false) {
+    for (var key in this) {
+        if (this.hasOwnProperty(key)) {
+            if (fn.apply(scope, [key, this[key], this]) === false) {
                 // stop iterating if the function returns false
                 break;
             }
         }
     }
+};
+
+Object.prototype.clone = function() {
+    var clone = {};
+    this.each(function(key, val) {
+        clone[key] = val;
+    });
+    return clone;
 };
 
 /*
