@@ -13,8 +13,14 @@ define(function() {
 
     for (let el of array) {
       let evaluatedValue = evaluator(el);
+
+      if (evaluatedValue === false) {
+        maxEl = el;
+        break;
+      }
+
       if (maxEl === null || evaluatedValue > maxEval) {
-        maxEl = [el, evaluatedValue];
+        maxEl = el;
         maxEval = evaluatedValue;
       }
     }
@@ -36,8 +42,14 @@ define(function() {
 
     for (let el of array) {
       let evaluatedValue = evaluator(el);
+
+      if (evaluatedValue === false) {
+        minEl = el;
+        break;
+      }
+
       if (minEl === null || evaluatedValue < minEval) {
-        minEl = [el, evaluatedValue];
+        minEl = el;
         minEval = evaluatedValue;
       }
     }
