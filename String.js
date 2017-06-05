@@ -5,12 +5,13 @@ define(function() {
    * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
    *          => 'My name is Bob. Welcome to Denver.'
    *
-   * @param {function} [evaluator] the function to use to evaluate the value of
-   *                               each element of the array.
-   * @returns the maximum element in the array
+   * @param {string} str              the string to format.
+   * @param {...string} ...formatArgs the values to use for formatting the
+   *                                  string
+   * @returns {string}                the formatted string
    */
-  let format = function(string, ...formatArgs) {
-    let formattedString = string;
+  let format = function(str, ...formatArgs) {
+    let formattedString = str;
     for (let i = 0; i < formatArgs.length; i++) {
       let reg = new RegExp('\\{' + i + '\\}', 'gm');
 
@@ -26,11 +27,21 @@ define(function() {
   };
 
   // Add the functions to the String prototype.
+  /**
+   * Returns the maximum element in the array.
+   *
+   * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
+   *          => 'My name is Bob. Welcome to Denver.'
+   *
+   * @param {...string} ...formatArgs the values to use for formatting the
+   *                                  string
+   * @returns {string}                the formatted string
+   */
   String.prototype.format = String.prototype.format || function(...formatArgs) {
     return format(this, ...formatArgs);
   };
 
   return {
-    'format': format,
+    format: format,
   };
 });

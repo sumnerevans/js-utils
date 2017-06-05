@@ -81,7 +81,7 @@ define(function() {
   };
 
   return {
-    'max': max,
-    'min': min,
+    max: max,
+    min: min,
   };
 });
