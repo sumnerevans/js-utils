@@ -1,4 +1,4 @@
-define(function() {
+define(() => {
   /**
    * Returns the maximum element in the array.
    *
