@@ -5,9 +5,10 @@ define(function() {
    * @example string.format('My name is {0}. Welcome to {1}.', 'Bob', 'Denver');
    *          => 'My name is Bob. Welcome to Denver.'
    *
-   * @param {string} str the format string
-   * @param {...} ...formatArgs the arguments to use to format the string
-   * @returns {string} the formatted string
+   * @param {string} str              the string to format.
+   * @param {...string} ...formatArgs the values to use for formatting the
+   *                                  string
+   * @returns {string}                the formatted string
    */
   let format = function(str, ...formatArgs) {
     let formattedString = str;
@@ -45,8 +46,9 @@ define(function() {
    * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
    *          => 'My name is Bob. Welcome to Denver.'
    *
-   * @param {...} ...formatArgs the arguments to use to format the string
-   * @returns {string} the formatted string
+   * @param {...string} ...formatArgs the values to use for formatting the
+   *                                  string
+   * @returns {string}                the formatted string
    */
   String.prototype.format = String.prototype.format || function(...formatArgs) {
     return format(this, ...formatArgs);

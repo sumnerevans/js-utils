@@ -1,3 +1,4 @@
-.jsbeatifyrc
+.jsbeautifyrc
 .jshintrc
 .tern-project
+*.orig
