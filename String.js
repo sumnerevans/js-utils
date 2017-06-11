@@ -1,8 +1,8 @@
 define(() => {
   /**
-   * Returns the maximum element in the array.
+   * Formats a string given a set of fomat arguments.
    *
-   * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
+   * @example string.format('My name is {0}. Welcome to {1}.', 'Bob', 'Denver');
    *          => 'My name is Bob. Welcome to Denver.'
    *
    * @param {string} str              the string to format.
@@ -26,9 +26,22 @@ define(() => {
     return formattedString;
   };
 
+  /**
+   * Get the ordinal (ASCII) value of the given character.
+   *
+   * @param {string} str the char to get the ordinal value of.
+   * @returns {number} the ordinal value of the character.
+   */
+  let ord = function(str) {
+    if (str.length !== 1) {
+      throw 'String.ord expected a string of length 1.';
+    }
+    return str.charCodeAt(0);
+  };
+
   // Add the functions to the String prototype.
   /**
-   * Returns the maximum element in the array.
+   * Formats a string given a set of fomat arguments.
    *
    * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
    *          => 'My name is Bob. Welcome to Denver.'
@@ -41,7 +54,17 @@ define(() => {
     return format(this, ...formatArgs);
   };
 
+  /**
+   * Get the ordinal (ASCII) value of the given character.
+   *
+   * @returns {number} the ordinal value of the character.
+   */
+  String.prototype.ord = String.prototype.ord || function() {
+    return ord(this);
+  };
+
   return {
     format: format,
+    ord: ord,
   };
 });

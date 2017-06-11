@@ -6,10 +6,41 @@ requirejs.config({
 });
 
 let array = requirejs('Array');
-let string = requirejs('String');
+requirejs('String');
 
 describe('Array', function() {
   let intArray = [1, 6, 2, 3, 4, 5];
+
+  describe('#enumerate()', function() {
+
+    it('should return work in for loops', function() {
+      let index = 0;
+      for (let [i, el] of intArray.enumerate()) {
+        assert.equal(i, index);
+        assert.equal(el, intArray[i]);
+        index++;
+      }
+
+      index = 0;
+      for (let [i, el] of array.enumerate(intArray)) {
+        assert.equal(i, index);
+        assert.equal(el, intArray[i]);
+        index++;
+      }
+    });
+
+    it('should return work as a generator function', function() {
+      let index = 0;
+      let gen = intArray.enumerate();
+      let next = gen.next();
+      while (!next.done) {
+        assert.equal(next.value[0], index);
+        assert.equal(next.value[1], intArray[index]);
+        index++;
+        next = gen.next();
+      }
+    });
+  });
 
   describe('#max()', function() {
 
@@ -50,27 +81,27 @@ describe('Array', function() {
         assert.equal(5, array.min(intArray, (x) => x % 5));
       });
   });
-});
 
-describe('String', function() {
-  describe('#format()', function() {
-
-    it('should return an empty string if none given', function() {
-      assert.equal('', ''.format(1));
-      assert.equal('', string.format(''));
-      assert.equal('', ''.format(10));
-    });
-
-    it('should format strings properly', function() {
-      assert.equal('This is cool',
-        '{0} {1} cool'.format('This', 'is'));
-      assert.equal('100', '{0}0'.format(10));
-      assert.equal('foo = bar', '{0}'.format({
-        foo: 'bar',
-        toString: function() {
-          return 'foo = ' + this.foo;
-        },
-      }));
-    });
+  describe('#sortBy()', function() {
+    it('should return a sorted array according to the given lambda',
+      function() {
+        assert.deepEqual([1, 2, 3], [3, 1, 2].sortBy(x => x));
+        assert.deepEqual([1, 2, 3], array.sortBy([3, 1, 2], x => x));
+        assert.deepEqual(['a', 'b', 'c'], ['c', 'a', 'b'].sortBy(x =>
+          x.ord()));
+        assert.deepEqual([{
+          a: 2
+        }, {
+          a: 3
+        }, {
+          a: 10
+        }], [{
+          'a': 10
+        }, {
+          a: 2
+        }, {
+          a: 3
+        }].sortBy(x => x.a));
+      });
   });
 });
