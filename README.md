@@ -1,4 +1,6 @@
 # js-utils
+[![Build Status](https://travis-ci.org/sumnerevans/js-utils.svg?branch=master)](https://travis-ci.org/sumnerevans/js-utils)
+
 Some helpful JavaScript prototype overloads.
 
 ## Including These Utils in Your Project
