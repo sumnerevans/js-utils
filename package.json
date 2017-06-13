@@ -2,10 +2,16 @@
   "name": "js-utils",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "./node_modules/istanbul/lib/cli.js cover --hook-run-in-context --dir public/js/coverage ./node_modules/mocha/bin/_mocha -- test",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {
+    "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
     "requirejs": "^2.3.3"
+  },
+  "devDependencies": {
+    "coveralls": "^2.13.1"
   }
 }
