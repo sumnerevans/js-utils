@@ -2,8 +2,8 @@ language: node_js
 node_js:
     - "node"
 install:
-  - npm install
-  - npm install -g codecov istanbul
+    - npm install
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
-  - codecov
+    - istanbul cover --hook-run-in-context --dir public/js/coverage ./node_modules/mocha/bin/_mocha
+after_script:
+    - codecov
