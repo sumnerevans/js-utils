@@ -59,6 +59,7 @@ describe('Array', function() {
       function() {
         assert.equal(1, intArray.max((x) => -x));
         assert.equal(4, array.max(intArray, (x) => x % 5));
+        assert.equal(1, array.max(intArray, () => false));
       });
   });
 
@@ -79,6 +80,7 @@ describe('Array', function() {
       function() {
         assert.equal(6, intArray.min((x) => -x));
         assert.equal(5, array.min(intArray, (x) => x % 5));
+        assert.equal(1, array.min(intArray, () => false));
       });
   });
 
