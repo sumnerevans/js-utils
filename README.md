@@ -1,4 +1,4 @@
-# js-utils
+# JS Utils
 [![Build Status](https://travis-ci.org/sumnerevans/js-utils.svg?branch=master)](https://travis-ci.org/sumnerevans/js-utils)
 [![codecov](https://codecov.io/gh/sumnerevans/js-utils/branch/master/graph/badge.svg)](https://codecov.io/gh/sumnerevans/js-utils)
 
