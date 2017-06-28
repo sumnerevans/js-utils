@@ -1,12 +1,6 @@
 let assert = require('assert');
-let requirejs = require('requirejs');
-requirejs.config({
-  baseUrl: '.',
-  nodeRequire: require,
-});
-
-let array = requirejs('Array');
-requirejs('String');
+let array = require('../Array');
+require('../String');
 
 describe('Array', function() {
   it('should convert an iterator to an array', function() {

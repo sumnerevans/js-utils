@@ -1,13 +1,7 @@
 let assert = require('assert');
-let requirejs = require('requirejs');
-requirejs.config({
-  baseUrl: '.',
-  nodeRequire: require,
-});
-
-let array = requirejs('Array');
-let gen = requirejs('Generator');
-let linq = requirejs('Linq');
+let array = require('../Array');
+let gen = require('../Generator');
+let linq = require('../Linq');
 
 describe('Linq', function() {
   let intArray = [1, 2, 3, 4, 5, 6];

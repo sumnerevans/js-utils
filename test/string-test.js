@@ -1,11 +1,5 @@
 let assert = require('assert');
-let requirejs = require('requirejs');
-requirejs.config({
-  baseUrl: '.',
-  nodeRequire: require,
-});
-
-let string = requirejs('String');
+let string = require('../String');
 
 describe('String', function() {
   describe('#format()', function() {

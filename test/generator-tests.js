@@ -1,12 +1,6 @@
 let assert = require('assert');
-let requirejs = require('requirejs');
-requirejs.config({
-  baseUrl: '.',
-  nodeRequire: require,
-});
-
-let gen = requirejs('Generator');
-let array = requirejs('Array');
+let gen = require('../Generator');
+let array = require('../Array');
 
 describe('Generator', function() {
   describe('#range()', function() {
