@@ -1,9 +1,5 @@
 language: node_js
 node_js:
     - "node"
-install:
-    - npm install
 script:
-    - istanbul cover --hook-run-in-context --dir public/js/coverage ./node_modules/mocha/bin/_mocha
-after_script:
-    - codecov
+    - gulp codecov
