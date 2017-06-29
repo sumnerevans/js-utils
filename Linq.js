@@ -1,13 +1,13 @@
-const array = require('./Array');
+require('./List');
+
 /**
  * Returns the maximum element in the array.
- *
- * @param {array}    arr         the array to find the minimum on
+ ** @param {array}    arr         the array to find the minimum on
  * @param {function} [evaluator] the function to use to evaluate the value of
  *                               each element of the array.
  * @returns the maximum element in the array
  */
-let max = function(arr, evaluator = (el) => el) {
+let max = (arr, evaluator = el => el) => {
   let maxEl = null;
   let maxEval = null;
 
@@ -36,7 +36,7 @@ let max = function(arr, evaluator = (el) => el) {
  *                               each element of the array.
  * @returns the minimum element in the array
  */
-let min = function(arr, evaluator = (el) => el) {
+let min = (arr, evaluator = el => el) => {
   let minEl = null;
   let minEval = null;
 
@@ -59,30 +59,80 @@ let min = function(arr, evaluator = (el) => el) {
 
 /**
  * Creates an sorted array of arrays according to the given evaluator
- * function. This can be chained with thenBy() calls.
+ * function. thenBy() calls can be chained to this function.
  *
  * @param {array} array the array to sort
- * @param {function} evaluator the function to use to evaluate the value of
- *                             each element of the array
- * @returns {*} the sorted array
+ * @param {function} evaluator the function to use to evaluate elements
+ * @returns {array} the sorted array
  */
-let orderBy = function(array, evaluator) {
-  array.sort((a, b) => {
-    let aVal = evaluator(a);
-    let bVal = evaluator(b);
-    return aVal - bVal;
-  });
+let orderBy = (array, evaluator) => {
+  // Group the elements by their evaluated value.
+  let evaluated = {};
+  for (let el of array) {
+    let evaluatedValue = evaluator(el);
+    if (!evaluated[evaluatedValue]) {
+      evaluated[evaluatedValue] = [];
+    }
+
+    evaluated[evaluatedValue].push(el);
+  }
+
+  let orderedArray = [];
+  for (let key of Object.keys(evaluated).sortBy(evaluator)) {
+    orderedArray.push(evaluated[key]);
+  }
+
+  // Keeps track of how many levels deep we are for ordering.
+  orderedArray.orderingLevel = 1;
+  return orderedArray;
+};
+
+/**
+ * Sorts the individual arrays within an ordered array of arrays.
+ *
+ * @param {array} array the array to sort
+ * @param {function} evaluator the function to use to evaluate the elements of
+ *                             the sub-arrays
+ * @returns {array} the sorted array of arrays
+ */
+let thenBy = (array, evaluator) => {
+  for (let [i, el] of array.enumerate()) {
+    array[i] = el.orderBy(evaluator);
+  }
+  array.orderingLevel++;
   return array;
+};
+
+/**
+ * Compresses an ordered list down to a single list.
+ *
+ * @param {array} array the array to compact
+ * @returns {array} the compressed array
+ */
+let toList = (array) => {
+  let compress = (arr, level) => {
+    if (!level) {
+      return arr;
+    }
+
+    let compressed = [];
+    for (let el of arr) {
+      compressed = compressed.concat(compress(el, level - 1));
+    }
+    return compressed;
+  };
+
+  return compress(array, array.orderingLevel);
 };
 
 /**
  * Yields the elements of the array for which the evaluator returns true.
  *
  * @param {array} arr the array
- * @param {function} evaluator=el=>el the function to evaluate the elements
+ * @param {function} evaluator=()=>true the function to evaluate the elements
  * @yields the elements of the array for which the evaluator returns true.
  */
-let where = function*(arr, evaluator = el => true) {
+let where = function*(arr, evaluator = () => true) {
   for (let el of arr) {
     if (evaluator(el)) {
       yield el;
@@ -113,9 +163,34 @@ Array.prototype.min = Array.prototype.min || function(evaluator) {
 };
 
 /**
+ * Creates an sorted array of arrays according to the given evaluator
+ * function. thenBy() calls can be chained to this function.
+ *
+ * @param {function} evaluator the function to use to evaluate elements
+ * @returns {array} the sorted array
+ */
+Array.prototype.orderBy = Array.prototype.orderBy || function(evaluator) {
+  return orderBy(this, evaluator);
+};
+
+/**
+ * Sorts the individual arrays within an ordered array of arrays.
+ *
+ * @param {function} evaluator the function to use to evaluate the elements of
+ *                             the sub-arrays
+ * @returns {array} the sorted array of arrays
+ */
+Array.prototype.thenBy = Array.prototype.thenBy || function(evaluator) {
+  return thenBy(this, evaluator);
+};
+
+Array.prototype.toList = Array.prototype.toList || function(evaluator) {
+  return toList(this, evaluator);
+};
+
+/**
  * Yields the elements of the array for which the evaluator returns true.
  *
- * @param {array} array the array
  * @param {function} evaluator=el=>el the function to evaluate the elements
  * @yields the elements of the array for which the evaluator returns true.
  */
@@ -128,5 +203,8 @@ Array.prototype.where = Array.prototype.where || function*(evaluator) {
 module.exports = {
   max: max,
   min: min,
+  orderBy: orderBy,
+  thenBy: thenBy,
+  toList: toList,
   where: where,
 };
