@@ -9,7 +9,7 @@ const config = {
   src: {
     js: '[!gulpfile]*.js',
     tests: 'test/*.js',
-    codecov: 'coverage/lcov.info',
+    codecov: './coverage/lcov.info',
   },
 };
 
@@ -40,12 +40,7 @@ gulp.task('lint', () =>
 gulp.task('test', ['lint', 'istanbul'], () =>
   gulp.src(config.src.tests)
     .pipe(mocha())
-    .once('error', () => {
-      process.exit(1);
-    })
-    .once('end', () => {
-      process.exit();
-    })
+    .once('error', () => process.exit(1))
     .pipe(istanbul.writeReports())
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 );
@@ -55,4 +50,4 @@ gulp.task('codecov', ['test'], () =>
     .pipe(codecov())
 );
 
-gulp.task('default', ['lint', 'test']);
+gulp.task('default', ['test']);
