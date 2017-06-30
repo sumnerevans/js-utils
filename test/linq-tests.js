@@ -124,16 +124,20 @@ describe('Linq', function() {
     });
 
     it('should return a compressed list three levels deep', function() {
-      let intArray = [42, 39, 44, 21, 17, 58];
-      console.log(intArray.orderBy(x => {
-        // console.log(x, x % 10);
-        return x % 10;
-      }));
+      let intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
+      assert.deepEqual([21, 11, 42, 44, 17, 27, 47, 58, 39],
+        intArray.orderBy(x => x % 10)
+          .thenBy(x => x / 10)
+          .thenBy(x => x % 10 === 1 ? x % 21 : x)
+          .toList());
     });
 
     it('should return a compressed list without compressing existing arrays',
       function() {
-        throw Error('Test Not Implemented');
+        let intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
+        let arrayOfArrays = intArray.orderBy(x => x % 10);
+        assert.deepEqual([[58], [44], [42], [39], [17, 47, 27], [11, 21]],
+          arrayOfArrays.orderBy(x => -x[0]).toList());
       });
 
     it('should return an empty list when an empty list is given', function() {
