@@ -154,11 +154,11 @@
     //
     // These rules are purely matters of style and are quite subjective.
     //
-    "indent": [1, 2], // this option sets a specific tab width for your code (off by default)
-    "brace-style": 1, // enforce one true brace style (off by default)
+    "indent": [2, 2], // this option sets a specific tab width for your code (off by default)
+    "brace-style": 2, // enforce one true brace style (off by default)
     "camelcase": 1, // require camel case names
-    "comma-spacing": [1, {"before": false, "after": true}], // enforce spacing before and after comma
-    "comma-style": [1, "last"], // enforce one true comma style (off by default)
+    "comma-spacing": [2, {"before": false, "after": true}], // enforce spacing before and after comma
+    "comma-style": [2, "last"], // enforce one true comma style (off by default)
     "consistent-this": [1, "_this"], // enforces consistent naming when capturing the current execution context (off by default)
     "eol-last": 1, // enforce newline at the end of file, with no multiple empty lines
     "func-names": 0, // require function expressions to have a name (off by default)
@@ -171,17 +171,17 @@
     "no-array-constructor": 1, // disallow use of the Array constructor
     "no-inline-comments": 1, // disallow comments inline after code (off by default)
     "no-lonely-if": 1, // disallow if as the only statement in an else block (off by default)
-    "no-mixed-spaces-and-tabs": 1, // disallow mixed spaces and tabs for indentation
-    "no-multiple-empty-lines": [1, {"max": 2}], // disallow multiple empty lines (off by default)
+    "no-mixed-spaces-and-tabs": 2, // disallow mixed spaces and tabs for indentation
+    "no-multiple-empty-lines": [2, {"max": 2}], // disallow multiple empty lines (off by default)
     "no-nested-ternary": 1, // disallow nested ternary expressions (off by default)
     "no-new-object": 1, // disallow use of the Object constructor
     "no-spaced-func": 1, // disallow space between function identifier and application
     "no-ternary": 0, // disallow the use of ternary operators (off by default)
-    "no-trailing-spaces": 1, // disallow trailing whitespace at the end of lines
+    "no-trailing-spaces": 2, // disallow trailing whitespace at the end of lines
     "no-underscore-dangle": 1, // disallow dangling underscores in identifiers
     "one-var": [1, "never"], // allow just one var statement per function (off by default)
     "operator-assignment": [1, "never"], // require assignment operator shorthand where possible or prohibit it entirely (off by default)
-    "padded-blocks": [1, "never"], // enforce padding within blocks (off by default)
+    "padded-blocks": [2, "never"], // enforce padding within blocks (off by default)
     "quote-props": [1, "as-needed"], // require quotes around object literal property names (off by default)
     "quotes": [1, "single"], // specify whether double or single quotes should be used
     "semi": [1, "always"], // require or disallow use of semicolons instead of ASI

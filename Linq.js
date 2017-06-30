@@ -81,6 +81,8 @@ let orderBy = (array, evaluator) => {
     prevEvaluated = evaled;
   }
 
+  // Keep track of the ordering level of the array so that when we compress, it
+  // will be easy.
   orderedArray.orderingLevel = 1;
   return orderedArray;
 };
@@ -97,30 +99,33 @@ let thenBy = (array, evaluator) => {
   for (let [i, el] of array.enumerate()) {
     array[i] = el.orderBy(evaluator);
   }
+
+  // Add another level of ordering.
   array.orderingLevel++;
   return array;
 };
 
 /**
- * Compresses an ordered list down to a single list.
+ * Spreads an ordered list iut into a single list.
  *
- * @param {array} array the array to compact
+ * @param {array} array the grouped array to spread out
  * @returns {array} the compressed array
  */
 let toList = (array) => {
-  let compress = (arr, level) => {
+  let spread = (arr, level) => {
     if (!level) {
       return arr;
     }
 
-    let compressed = [];
+    // Recursively call spread until we get to the base level.
+    let spreaded = [];
     for (let el of arr) {
-      compressed = compressed.concat(compress(el, level - 1));
+      spreaded = spreaded.concat(spread(el, level - 1));
     }
-    return compressed;
+    return spreaded;
   };
 
-  return compress(array, array.orderingLevel);
+  return spread(array, array.orderingLevel);
 };
 
 /**
