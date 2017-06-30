@@ -1,6 +1,6 @@
 {
   "name": "js-utils",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "scripts": {
     "test": "gulp test",
     "codecov": "gulp codecov"
@@ -9,10 +9,14 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "codecov": "^2.2.0",
+    "eslint": "^4.1.1",
+    "eslint-plugin-react": "^7.1.0",
     "gulp": "^3.9.1",
     "gulp-codecov": "^3.0.1",
+    "gulp-eslint": "^4.0.0",
     "gulp-istanbul": "^1.1.2",
     "gulp-mocha": "^3.0.1",
+    "gulp-util": "^3.0.8",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2"
   },

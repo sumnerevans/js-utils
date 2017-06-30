@@ -2,10 +2,10 @@ require('./List');
 
 /**
  * Returns the maximum element in the array.
- ** @param {array}    arr         the array to find the minimum on
+ * @param {array}    arr         the array to find the minimum on
  * @param {function} [evaluator] the function to use to evaluate the value of
  *                               each element of the array.
- * @returns the maximum element in the array
+ * @returns {*} the maximum element in the array
  */
 let max = (arr, evaluator = el => el) => {
   let maxEl = null;
@@ -34,7 +34,7 @@ let max = (arr, evaluator = el => el) => {
  * @param {array}    arr         the array to find the maximum on
  * @param {function} [evaluator] the function to use to evaluate the value of
  *                               each element of the array.
- * @returns the minimum element in the array
+ * @returns {*} the minimum element in the array
  */
 let min = (arr, evaluator = el => el) => {
   let minEl = null;
@@ -67,22 +67,20 @@ let min = (arr, evaluator = el => el) => {
  */
 let orderBy = (array, evaluator) => {
   // Group the elements by their evaluated value.
-  let evaluated = {};
-  for (let el of array) {
-    let evaluatedValue = evaluator(el);
-    if (!evaluated[evaluatedValue]) {
-      evaluated[evaluatedValue] = [];
-    }
+  array.sortBy(evaluator);
 
-    evaluated[evaluatedValue].push(el);
-  }
-
+  let prevEvaluated = null;
   let orderedArray = [];
-  for (let key of Object.keys(evaluated).sortBy(evaluator)) {
-    orderedArray.push(evaluated[key]);
+  for (let el of array) {
+    let evaled = evaluator(el);
+    if (evaled !== prevEvaluated || prevEvaluated === null) {
+      orderedArray.push([el]);
+    } else {
+      orderedArray[orderedArray.length - 1].push(el);
+    }
+    prevEvaluated = evaled;
   }
 
-  // Keeps track of how many levels deep we are for ordering.
   orderedArray.orderingLevel = 1;
   return orderedArray;
 };
@@ -130,7 +128,7 @@ let toList = (array) => {
  *
  * @param {array} arr the array
  * @param {function} evaluator=()=>true the function to evaluate the elements
- * @yields the elements of the array for which the evaluator returns true.
+ * @returns {generator} the elements of the array for which the evaluator returns true.
  */
 let where = function*(arr, evaluator = () => true) {
   for (let el of arr) {
@@ -145,7 +143,7 @@ let where = function*(arr, evaluator = () => true) {
  *
  * @param {function} [evaluator] the function to use to evaluate the value of
  *                               each element of the array.
- * @returns the maximum element in the array
+ * @returns {*} the maximum element in the array
  */
 Array.prototype.max = Array.prototype.max || function(evaluator) {
   return max(this, evaluator);
@@ -156,7 +154,7 @@ Array.prototype.max = Array.prototype.max || function(evaluator) {
  *
  * @param {function} [evaluator] the function to use to evaluate the value of
  *                               each element of the array.
- * @returns the minimum element in the array
+ * @returns {*} the minimum element in the array
  */
 Array.prototype.min = Array.prototype.min || function(evaluator) {
   return min(this, evaluator);
@@ -192,7 +190,7 @@ Array.prototype.toList = Array.prototype.toList || function(evaluator) {
  * Yields the elements of the array for which the evaluator returns true.
  *
  * @param {function} evaluator=el=>el the function to evaluate the elements
- * @yields the elements of the array for which the evaluator returns true.
+ * @returns {generator} the elements of the array for which the evaluator returns true.
  */
 Array.prototype.where = Array.prototype.where || function*(evaluator) {
   for (let el of where(this, evaluator)) {

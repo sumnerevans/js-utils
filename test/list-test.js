@@ -80,19 +80,8 @@ describe('List', function() {
         assert.deepEqual([1, 2, 3], [3, 1, 2].sortBy(x => x));
         assert.deepEqual([1, 2, 3], list.sortBy([3, 1, 2], x => x));
         assert.deepEqual(['a', 'b', 'c'], ['c', 'a', 'b'].sortBy(x => x.ord()));
-        assert.deepEqual([{
-          a: 2
-        }, {
-          a: 3
-        }, {
-          a: 10
-        }], [{
-          'a': 10
-        }, {
-          a: 2
-        }, {
-          a: 3
-        }].sortBy(x => x.a));
+        assert.deepEqual([{ a: 2 }, { a: 3 }, { a: 10 }],
+          [{ a: 10 }, { a: 2 }, { a: 3 }].sortBy(x => x.a));
       });
   });
 });

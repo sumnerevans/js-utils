@@ -1,28 +1,53 @@
 const codecov = require('gulp-codecov');
+const eslint = require('gulp-eslint');
 const gulp = require('gulp');
-const mocha = require('gulp-mocha');
+const PluginError = require('gulp-util').PluginError;
 const istanbul = require('gulp-istanbul');
+const mocha = require('gulp-mocha');
+
+const config = {
+  warningThreshold: 10,
+  src: {
+    js: '[!gulpfile]*.js',
+    tests: 'test/*.js',
+    codecov: 'coverage/lcov.info',
+  },
+};
 
 gulp.task('istanbul', () =>
-  gulp.src('[!gulpfile]*.js')
-  .pipe(istanbul({
-    includeUntested: true,
-  }))
-  .pipe(istanbul.hookRequire())
+  gulp.src(config.src.js)
+    .pipe(istanbul({
+      includeUntested: true,
+    }))
+    .pipe(istanbul.hookRequire())
 );
 
-gulp.task('test', ['istanbul'], () =>
-  gulp.src('test/*.js')
-  .pipe(mocha())
-  .pipe(istanbul.writeReports())
-  .pipe(istanbul.enforceThresholds({
-    thresholds: {
-      global: 90,
-    },
-  }))
+gulp.task('lint', () =>
+  gulp.src([config.src.js, config.src.tests])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.results(results => {
+      if(results.warningCount > config.warningThreshold) {
+        throw new Error(
+          'ESLint: Warning count too high\n' +
+          `Warning count must be under ${config.warningThreshold}\n` +
+          `Saw ${results.warningCount} warnings.`
+        );
+      }
+    }))
+    .pipe(eslint.failAfterError())
+);
+
+gulp.task('test', ['lint', 'istanbul'], () =>
+  gulp.src(config.src.tests)
+    .pipe(mocha())
+    .pipe(istanbul.writeReports())
+    .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 );
 
 gulp.task('codecov', ['test'], () =>
-  gulp.src('./coverage/lcov.info')
-  .pipe(codecov())
+  gulp.src(config.src.codecov)
+    .pipe(codecov())
 );
+
+gulp.task('default', ['lint', 'test']);

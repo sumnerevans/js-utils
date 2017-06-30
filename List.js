@@ -2,8 +2,8 @@
  * Enumerate the array with the pair [index, value].
  *
  * @param {array} array the array to enumerate
- * @yields an array with the index of the element and the element itself for
- *         each element of the original array.
+ * @returns {generator} an array with the index of the element and the element
+ *                      itself for each element of the original array.
  */
 let enumerate = function*(array) {
   for (let i = 0; i < array.length; i++) {
@@ -16,12 +16,12 @@ let enumerate = function*(array) {
  *
  * @param {array} array the array to remove elements from
  * @param {int} start the first index to remove
- * @param {int} stop the first index to remove
+ * @param {int} end the last index to remove
  * @returns {array} the array without the elements (note, the actual array
  *                  reference is modified)
  */
-let remove = function(array, start, stop) {
-  stop = stop || start;
+let remove = function(array, start, end) {
+  const stop = end || start;
   array.splice(start, (stop - start) + 1);
   return array;
 };
@@ -32,7 +32,7 @@ let remove = function(array, start, stop) {
  * @param {array} array the array to sort
  * @param {function} evaluator the function to use to evaluate the value of
  *                             each element of the array
- * @returns {*} the sorted array
+ * @returns {array} the sorted array
  */
 let sortBy = function(array, evaluator) {
   array.sort((a, b) => {
@@ -48,8 +48,8 @@ let sortBy = function(array, evaluator) {
  * Enumerate the array with the pair [index, value].
  *
  * @param {array} array the array to enumerate
- * @yields an array with the index of the element and the element itself for
- *         each element of the original array.
+ * @returns {generator} an array with the index of the element and the element
+ *                      itself for each element of the original array.
  */
 Array.prototype.enumerate = Array.prototype.enumerate || function*() {
   for (let el of enumerate(this)) {

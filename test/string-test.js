@@ -3,7 +3,6 @@ let string = require('../String');
 
 describe('String', function() {
   describe('#format()', function() {
-
     it('should return an empty string if none given', function() {
       assert.equal('', ''.format(1));
       assert.equal('', string.format(''));
@@ -24,7 +23,6 @@ describe('String', function() {
   });
 
   describe('#ord()', function() {
-
     it('should return the ordinal value of the given char', function() {
       assert.equal(10, '\n'.ord());
       assert.equal(97, string.ord('a'));

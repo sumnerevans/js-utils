@@ -4,10 +4,9 @@
  * @example string.format('My name is {0}. Welcome to {1}.', 'Bob', 'Denver');
  *          => 'My name is Bob. Welcome to Denver.'
  *
- * @param {string} str              the string to format.
- * @param {...string} ...formatArgs the values to use for formatting the
- *                                  string
- * @returns {string}                the formatted string
+ * @param {string} str           the string to format.
+ * @param {...string} formatArgs the values to use for formatting the string
+ * @returns {string}             the formatted string
  */
 let format = function(str, ...formatArgs) {
   let formattedString = str;
@@ -33,7 +32,7 @@ let format = function(str, ...formatArgs) {
  */
 let ord = function(str) {
   if (str.length !== 1) {
-    throw 'String.ord expected a string of length 1.';
+    throw Error('String.ord expected a string of length 1.');
   }
   return str.charCodeAt(0);
 };
@@ -45,9 +44,8 @@ let ord = function(str) {
  * @example 'My name is {0}. Welcome to {1}.'.format('Bob', 'Denver');
  *          => 'My name is Bob. Welcome to Denver.'
  *
- * @param {...string} ...formatArgs the values to use for formatting the
- *                                  string
- * @returns {string}                the formatted string
+ * @param {...string} formatArgs the values to use for formatting the string
+ * @returns {string}             the formatted string
  */
 String.prototype.format = String.prototype.format || function(...formatArgs) {
   return format(this, ...formatArgs);
