@@ -1,7 +1,6 @@
 const codecov = require('gulp-codecov');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
-const PluginError = require('gulp-util').PluginError;
 const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
 
@@ -41,6 +40,12 @@ gulp.task('lint', () =>
 gulp.task('test', ['lint', 'istanbul'], () =>
   gulp.src(config.src.tests)
     .pipe(mocha())
+    .once('error', () => {
+      process.exit(1);
+    })
+    .once('end', () => {
+      process.exit();
+    })
     .pipe(istanbul.writeReports())
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 );
