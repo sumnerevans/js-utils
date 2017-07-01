@@ -9,7 +9,7 @@ require('./List');
  *                                      the array with
  * @returns {number} the average
  */
-let average = function(array, evaluator = el => el) {
+const average = function(array, evaluator = el => el) {
   return array.sum(evaluator) / array.length;
 };
 
@@ -22,8 +22,8 @@ let average = function(array, evaluator = el => el) {
  * @returns {*} the first element of the array that matches the evaluator
  * @throws Error Sequence contains no matching element
  */
-let first = function(array, evaluator = () => true) {
-  for (let el of array) {
+const first = function(array, evaluator = () => true) {
+  for (const el of array) {
     if (evaluator(el)) {
       return el;
     }
@@ -41,8 +41,8 @@ let first = function(array, evaluator = () => true) {
  * @returns {*} the last element of the array that matches the evaluator
  * @throws Error Sequence contains no matching element
  */
-let last = function(array, evaluator = () => true) {
-  for (let el of array.reversed()) {
+const last = function(array, evaluator = () => true) {
+  for (const el of array.reversed()) {
     if (evaluator(el)) {
       return el;
     }
@@ -58,12 +58,12 @@ let last = function(array, evaluator = () => true) {
  *                                      value of each element of the array.
  * @returns {*} the maximum element in the array
  */
-let max = function(arr, evaluator = el => el) {
+const max = function(arr, evaluator = el => el) {
   let maxEl = null;
   let maxEval = null;
 
-  for (let el of arr) {
-    let evaluatedValue = evaluator(el);
+  for (const el of arr) {
+    const evaluatedValue = evaluator(el);
 
     if (evaluatedValue === false) {
       maxEl = el;
@@ -87,12 +87,12 @@ let max = function(arr, evaluator = el => el) {
  *                                      value of each element of the array.
  * @returns {*} the minimum element in the array
  */
-let min = function(arr, evaluator = el => el) {
+const min = function(arr, evaluator = el => el) {
   let minEl = null;
   let minEval = null;
 
-  for (let el of arr) {
-    let evaluatedValue = evaluator(el);
+  for (const el of arr) {
+    const evaluatedValue = evaluator(el);
 
     if (evaluatedValue === false) {
       minEl = el;
@@ -116,14 +116,14 @@ let min = function(arr, evaluator = el => el) {
  * @param {function} evaluator the function to use to evaluate elements
  * @returns {array} the sorted array
  */
-let orderBy = function(array, evaluator) {
+const orderBy = function(array, evaluator) {
   // Group the elements by their evaluated value.
   array.sortBy(evaluator);
 
   let prevEvaluated = null;
-  let orderedArray = [];
-  for (let el of array) {
-    let evaled = evaluator(el);
+  const orderedArray = [];
+  for (const el of array) {
+    const evaled = evaluator(el);
     if (evaled !== prevEvaluated || prevEvaluated === null) {
       orderedArray.push([el]);
     } else {
@@ -146,9 +146,9 @@ let orderBy = function(array, evaluator) {
  *                                      the array for the summation
  * @returns {number} the sum of the elements
  */
-let sum = function(array, evaluator = el => el) {
+const sum = function(array, evaluator = el => el) {
   let total = 0;
-  for (let el of array) {
+  for (const el of array) {
     total += evaluator(el);
   }
   return total;
@@ -162,8 +162,8 @@ let sum = function(array, evaluator = el => el) {
  *                             the sub-arrays
  * @returns {array} the sorted array of arrays
  */
-let thenBy = function(array, evaluator) {
-  for (let [i, el] of array.enumerate()) {
+const thenBy = function(array, evaluator) {
+  for (const [i, el] of array.enumerate()) {
     array[i] = el.orderBy(evaluator);
   }
 
@@ -178,8 +178,8 @@ let thenBy = function(array, evaluator) {
  * @param {array} array the grouped array to spread out
  * @returns {array} the compressed array
  */
-let toList = function(array) {
-  let flatten = (arr, level) => {
+const toList = function(array) {
+  const flatten = (arr, level) => {
     if (!level) {
       return arr;
     }
@@ -201,7 +201,7 @@ let toList = function(array) {
  * @returns {array} the elements of the array for which the evaluator returns
  *                  true.
  */
-let where = (array, evaluator) => array.where(evaluator);
+const where = (array, evaluator) => array.where(evaluator);
 
 /**
  * Calaculate the average of the elements of the array using the given

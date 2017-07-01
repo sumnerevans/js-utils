@@ -1,10 +1,10 @@
-let assert = require('assert');
-let list = require('../List');
+const assert = require('assert');
+const list = require('../List');
 require('../String');
 
 describe('List', () => {
   it('should convert an iterator to an array', () => {
-    let generator = function*() {
+    const generator = function*() {
       yield 1;
       yield 2;
       yield 3;
@@ -15,16 +15,16 @@ describe('List', () => {
 
   describe('#enumerate()', () => {
     it('should work in for loops', () => {
-      let intArray = [1, 2, 3, 4, 5, 6];
+      const intArray = [1, 2, 3, 4, 5, 6];
       let index = 0;
-      for (let [i, el] of intArray.enumerate()) {
+      for (const [i, el] of intArray.enumerate()) {
         assert.equal(i, index);
         assert.equal(el, intArray[i]);
         index++;
       }
 
       index = 0;
-      for (let [i, el] of list.enumerate(intArray)) {
+      for (const [i, el] of list.enumerate(intArray)) {
         assert.equal(i, index);
         assert.equal(el, intArray[i]);
         index++;
@@ -32,9 +32,9 @@ describe('List', () => {
     });
 
     it('should work as a generator function', () => {
-      let intArray = [1, 2, 3, 4, 5, 6];
+      const intArray = [1, 2, 3, 4, 5, 6];
       let index = 0;
-      let gen = intArray.enumerate();
+      const gen = intArray.enumerate();
       let next = gen.next();
       while (!next.done) {
         assert.equal(next.value[0], index);
@@ -75,16 +75,16 @@ describe('List', () => {
 
   describe('#reversed()', () => {
     it('should work in for loops', () => {
-      let intArray = [1, 2, 3, 4, 5, 6];
-      let reversed = [6, 5, 4, 3, 2, 1];
+      const intArray = [1, 2, 3, 4, 5, 6];
+      const reversed = [6, 5, 4, 3, 2, 1];
       let index = 0;
-      for (let el of intArray.reversed()) {
+      for (const el of intArray.reversed()) {
         assert.equal(reversed[index], el);
         index++;
       }
 
       index = 0;
-      for (let [i, el] of list.enumerate(intArray)) {
+      for (const [i, el] of list.enumerate(intArray)) {
         assert.equal(i, index);
         assert.equal(el, intArray[i]);
         index++;
@@ -92,9 +92,9 @@ describe('List', () => {
     });
 
     it('should work as a generator function', () => {
-      let intArray = [1, 2, 3, 4, 5, 6];
+      const intArray = [1, 2, 3, 4, 5, 6];
       let index = 0;
-      let gen = intArray.enumerate();
+      const gen = intArray.enumerate();
       let next = gen.next();
       while (!next.done) {
         assert.equal(next.value[0], index);

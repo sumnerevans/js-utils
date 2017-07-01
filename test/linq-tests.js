@@ -1,10 +1,10 @@
-let assert = require('assert');
-let list = require('../List');
-let gen = require('../Generator');
-let linq = require('../Linq');
+const assert = require('assert');
+const list = require('../List');
+const gen = require('../Generator');
+const linq = require('../Linq');
 
-let arrayDeepEqual = (expected, actual) => {
-  for (let [i, x] of expected.enumerate()) {
+const arrayDeepEqual = (expected, actual) => {
+  for (const [i, x] of expected.enumerate()) {
     if (Array.isArray(x)) {
       arrayDeepEqual(x, actual[i]);
     } else {
@@ -21,13 +21,13 @@ describe('Linq', () => {
     });
 
     it('should return the average of the numbers in the array', () => {
-      let intArray = list(gen.range(1, 7));
+      const intArray = list(gen.range(1, 7));
       assert.equal(3.5, intArray.average());
       assert.equal(3.5, linq.average(intArray));
     });
 
     it('should return the average according to the given lambda', () => {
-      let intArray = list(gen.range(1, 7));
+      const intArray = list(gen.range(1, 7));
       assert.equal(-3.5, intArray.average(x => -x));
       assert.equal(1.83333333333333333333, linq.average(intArray, x => x % 5));
     });
@@ -55,14 +55,14 @@ describe('Linq', () => {
 
     it('should return the first element of the array if no lambda is given',
       () => {
-        let intArray = list(gen.range(1, 7));
+        const intArray = list(gen.range(1, 7));
         assert.equal(1, intArray.first());
         assert.equal(1, linq.first(intArray));
       });
 
     it('should return the first element of the array that matches the lambda',
       () => {
-        let intArray = list(gen.range(1, 7));
+        const intArray = list(gen.range(1, 7));
         assert.equal(3, intArray.first(x => x % 3 === 0));
         assert.deepEqual({ a: 4 },
           linq.first([{ a: 2 }, { a: 4 }, { a: 1 }], x => x.a === 4));
@@ -70,7 +70,7 @@ describe('Linq', () => {
   });
 
   describe('#firstOrDefault()', () => {
-    //TODO: assert(false);
+    // TODO: assert(false);
   });
 
   describe('#last()', () => {
@@ -85,14 +85,14 @@ describe('Linq', () => {
 
     it('should return the last element of the array if no lambda is given',
       () => {
-        let intArray = list(gen.range(1, 7));
+        const intArray = list(gen.range(1, 7));
         assert.equal(6, intArray.last());
         assert.equal(6, linq.last(intArray));
       });
 
     it('should return the last element of the array that matches the lambda',
       () => {
-        let intArray = list(gen.range(1, 7));
+        const intArray = list(gen.range(1, 7));
         assert.equal(4, intArray.last(x => x % 4 === 0));
         assert.deepEqual({ a: 4 },
           linq.last([{ a: 2 }, { a: 4 }, { a: 1 }], x => x.a === 4));
@@ -110,15 +110,15 @@ describe('Linq', () => {
     });
 
     it('should return the largest number in an array of numbers', () => {
-      let intArray = list(gen.range(1, 7));
+      const intArray = list(gen.range(1, 7));
       assert.equal(6, intArray.max());
       assert.equal(6, linq.max(intArray));
     });
 
     it('should return the largest number according to the given lambda', () => {
-      let intArray = list(gen.range(1, 7));
-      assert.equal(1, intArray.max((x) => -x));
-      assert.equal(4, linq.max(intArray, (x) => x % 5));
+      const intArray = list(gen.range(1, 7));
+      assert.equal(1, intArray.max(x => -x));
+      assert.equal(4, linq.max(intArray, x => x % 5));
       assert.equal(1, linq.max(intArray, () => false));
     });
   });
@@ -130,30 +130,30 @@ describe('Linq', () => {
     });
 
     it('should return the smallest number in an array of numbers', () => {
-      let intArray = list(gen.range(1, 7));
+      const intArray = list(gen.range(1, 7));
       assert.equal(1, intArray.min());
       assert.equal(1, linq.min(intArray));
     });
 
     it(
       'should return the smallest number according to the given lambda', () => {
-        let intArray = list(gen.range(1, 7));
-        assert.equal(6, intArray.min((x) => -x));
-        assert.equal(5, linq.min(intArray, (x) => x % 5));
+        const intArray = list(gen.range(1, 7));
+        assert.equal(6, intArray.min(x => -x));
+        assert.equal(5, linq.min(intArray, x => x % 5));
         assert.equal(1, linq.min(intArray, () => false));
       });
   });
 
   describe('#orderBy()', () => {
     it('should return a list of lists sorted by the lambda', () => {
-      let intArray = list(gen.range(1, 7));
+      const intArray = list(gen.range(1, 7));
       arrayDeepEqual([[2, 4, 6], [1, 3, 5]], intArray.orderBy(x => x % 2));
       arrayDeepEqual([[2, 4, 6], [1, 3, 5]],
         linq.orderBy(intArray, x => x % 2));
     });
 
     it('should work with negative numbers', () => {
-      let intArray = list(gen.range(-4, 5));
+      const intArray = list(gen.range(-4, 5));
       arrayDeepEqual([[1, 2, 3, 4], [-4, -3, -2, -1, 0]],
         intArray.orderBy(x => x > 0 ? 0 : 1));
     });
@@ -179,7 +179,7 @@ describe('Linq', () => {
   describe('#sum()', () => {
     it('should return the sum of the elements if no lambda is specified',
       () => {
-        let intArray = list(gen.range(1, 7));
+        const intArray = list(gen.range(1, 7));
         assert.equal(21, intArray.sum());
         assert.equal(0, linq.sum([-10, 3, 6, -4, 5]));
       });
@@ -193,7 +193,7 @@ describe('Linq', () => {
 
   describe('#thenBy()', () => {
     it('should return a list of sorted lists using the lambda', () => {
-      let intArray = [4, 3, 6, 2, 1, 5];
+      const intArray = [4, 3, 6, 2, 1, 5];
       arrayDeepEqual([[[6], [4], [2]], [[5], [3], [1]]],
         intArray.orderBy(x => x % 2).thenBy(x => -x));
       arrayDeepEqual([[[6], [4], [2]], [[5], [3], [1]]],
@@ -208,7 +208,7 @@ describe('Linq', () => {
 
   describe('#toList()', () => {
     it('should return a compressed list one level deep', () => {
-      let intArray = [4, 3, 6, 2, 1, 5];
+      const intArray = [4, 3, 6, 2, 1, 5];
       assert.deepEqual([4, 6, 2, 3, 1, 5],
         intArray.orderBy(x => x % 2).toList());
       assert.deepEqual([4, 6, 2, 3, 1, 5],
@@ -216,7 +216,7 @@ describe('Linq', () => {
     });
 
     it('should return a compressed list two levels deep', () => {
-      let intArray = [4, 3, 6, 2, 1, 5];
+      const intArray = [4, 3, 6, 2, 1, 5];
       assert.deepEqual([2, 4, 6, 1, 3, 5],
         intArray.orderBy(x => x % 2).thenBy(x => x).toList());
       assert.deepEqual([6, 4, 2, 5, 3, 1],
@@ -225,7 +225,7 @@ describe('Linq', () => {
     });
 
     it('should return a compressed list three levels deep', () => {
-      let intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
+      const intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
       assert.deepEqual([21, 11, 42, 44, 17, 27, 47, 58, 39],
         intArray.orderBy(x => x % 10)
           .thenBy(x => x / 10)
@@ -235,8 +235,8 @@ describe('Linq', () => {
 
     it('should return a compressed list without compressing existing arrays',
       () => {
-        let intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
-        let arrayOfArrays = intArray.orderBy(x => x % 10);
+        const intArray = [42, 39, 11, 44, 21, 17, 58, 47, 27];
+        const arrayOfArrays = intArray.orderBy(x => x % 10);
         assert.deepEqual([[58], [44], [42], [39], [17, 47, 27], [11, 21]],
           arrayOfArrays.orderBy(x => -x[0]).toList());
       });
@@ -251,7 +251,11 @@ describe('Linq', () => {
     it(
       'should return a list of the elements filtered by the evaluator',
       () => {
-        let arr = [{ a: true, id: 1 }, { b: true, id: 2 }, { a: true, id: 3 }];
+        const arr = [
+          { a: true, id: 1 },
+          { b: true, id: 2 },
+          { a: true, id: 3 },
+        ];
 
         assert.deepEqual([{ a: true, id: 1 }, { a: true, id: 3 }],
           linq.where(arr, el => el.a));
@@ -259,7 +263,7 @@ describe('Linq', () => {
         assert.deepEqual([{ a: true, id: 1 }, { b: true, id: 2 }],
           linq.where(arr, el => el.id < 3));
 
-        let numbers = list(gen.range(3, 10));
+        const numbers = list(gen.range(3, 10));
         assert.deepEqual([5, 6, 7], numbers.where(x => x > 4 && x < 8));
       });
   });

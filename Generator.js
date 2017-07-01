@@ -13,10 +13,10 @@
  *
  * @returns {generator} a generator for the range
  */
-let range = function*(begin, end, step) {
-  let start = typeof end === 'undefined' ? 0 : begin;
-  let stop = end || begin;
-  let increment = step || 1;
+const range = function*(begin, end, step) {
+  const start = typeof end === 'undefined' ? 0 : begin;
+  const stop = end || begin;
+  const increment = step || 1;
 
   for (let i = start; i < stop; i = i + increment) {
     yield i;

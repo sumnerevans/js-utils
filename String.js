@@ -8,10 +8,10 @@
  * @param {...string} formatArgs the values to use for formatting the string
  * @returns {string}             the formatted string
  */
-let format = function(str, ...formatArgs) {
+const format = function(str, ...formatArgs) {
   let formattedString = str;
   for (let i = 0; i < formatArgs.length; i++) {
-    let reg = new RegExp(`\\{${i}\\}`, 'gm');
+    const reg = new RegExp(`\\{${i}\\}`, 'gm');
 
     let replacementString = formatArgs[i];
     if (replacementString.toString) {
@@ -31,7 +31,7 @@ let format = function(str, ...formatArgs) {
  * @param {array} array the array to join
  * @returns {string} the joined array
  */
-let join = function(separator, array) {
+const join = function(separator, array) {
   return array.join(separator);
 };
 
@@ -41,7 +41,7 @@ let join = function(separator, array) {
  * @param {string} str the char to get the ordinal value of.
  * @returns {number} the ordinal value of the character.
  */
-let ord = function(str) {
+const ord = function(str) {
   if (str.length !== 1) {
     throw Error('String.ord expected a string of length 1.');
   }

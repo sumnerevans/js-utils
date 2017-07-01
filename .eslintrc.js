@@ -221,50 +221,54 @@ module.exports = {
     }],
     semi: [2, 'always'],
     'semi-style': [2, 'last'],
-    // 'sort-vars': 0, // Sort variables within the same declaration block (off by default)
-    // 'space-before-blocks': [1, 'always'], // Require or disallow space before blocks (off by default)
-    'space-before-function-paren': [1, {
+    'space-before-blocks': [2, 'always'],
+    'space-before-function-paren': [2, {
       anonymous: 'never',
       named: 'never',
       asyncArrow: 'always',
     }],
     'space-in-parens': [2, 'never'],
-    // 'space-infix-ops': ['error'], // Require spaces around operators
-    // 'space-unary-ops': [
-    //   1, {
-    //     words: true,
-    //     nonwords: false,
-    //   },
-    // ], // Require or disallow spaces before/after unary operators (words on by default, nonwords off by default)
+    'space-infix-ops': 2,
+    'space-unary-ops': [2, {
+      words: true,
+      nonwords: false,
+    }],
+    'spaced-comment': [2, 'always', {
+      block: { balanced: true },
+    }],
+    'switch-colon-spacing': 2,
+    'wrap-regex': 2,
 
     //
     // ECMAScript 6
     //
-    // These rules are only relevant to ES6 environments and are off by default.
+    // These rules relate to ES6, also known as ES2015.
     //
-    // 'no-var': 2, // Require let or const instead of var (off by default)
-    // 'generator-star-spacing': [
-    //   2, {
-    //     before: false,
-    //     after: false,
-    //   },
-    // ], // Enforce the spacing around the * in generator functions (off by default)
-    // 'arrow-spacing': [
-    //   2, {
-    //     before: true,
-    //     after: true,
-    //   },
-    // ],
-    // 'prefer-template': 1,
-
-    // //
-    // // Legacy
-    // //
-    // // The following rules are included for compatibility with JSHint and JSLint.
-    // // While the names of the rules may not match up with the JSHint/JSLint counterpart,
-    // // The functionality is the same.
-    // //
-    // 'max-depth': [2, 3], // Specify the maximum depth that blocks can be nested (off by default)
+    'arrow-body-style': [2, 'as-needed', {
+      requireReturnForObjectLiteral: true,
+    }],
+    'arrow-parens': [2, 'as-needed'],
+    'arrow-spacing': 2,
+    'generator-star-spacing': [2, {
+      before: false,
+      after: false,
+    }],
+    'no-duplicate-imports': 2,
+    'no-new-symbol': 2,
+    'no-useless-computed-key': 2,
+    'no-useless-constructor': 2,
+    'no-useless-rename': 2,
+    'no-var': 2,
+    'prefer-arrow-callback': 2,
+    'prefer-const': 2,
+    'prefer-numeric-literals': 2,
+    'prefer-rest-params': 2,
+    'prefer-spread': 2,
+    'prefer-template': 2,
+    'rest-spread-spacing': 2,
+    'symbol-description': 1,
+    'template-curly-spacing': 2,
+    'yield-star-spacing': 2,
   },
 
   globals: {},

@@ -5,7 +5,7 @@
  * @returns {generator} an array with the index of the element and the element
  *                      itself for each element of the original array.
  */
-let enumerate = function*(array) {
+const enumerate = function*(array) {
   for (let i = 0; i < array.length; i++) {
     yield [i, array[i]];
   }
@@ -20,7 +20,7 @@ let enumerate = function*(array) {
  * @returns {array} the array without the elements (note, the actual array
  *                  reference is modified)
  */
-let remove = function(array, start, end) {
+const remove = function(array, start, end) {
   const stop = end || start;
   array.splice(start, (stop - start) + 1);
   return array;
@@ -33,7 +33,7 @@ let remove = function(array, start, end) {
  * @returns {generator} a generator which outputs the elements of the array in
  *                      a reversed order
  */
-let reversed = function*(array) {
+const reversed = function*(array) {
   for (let i = array.length - 1; i >= 0; i--) {
     yield array[i];
   }
@@ -47,10 +47,10 @@ let reversed = function*(array) {
  *                             each element of the array
  * @returns {array} the sorted array
  */
-let sortBy = function(array, evaluator) {
+const sortBy = function(array, evaluator) {
   array.sort((a, b) => {
-    let aVal = evaluator(a);
-    let bVal = evaluator(b);
+    const aVal = evaluator(a);
+    const bVal = evaluator(b);
     return aVal - bVal;
   });
   return array;
@@ -65,9 +65,7 @@ let sortBy = function(array, evaluator) {
  *                      itself for each element of the original array.
  */
 Array.prototype.enumerate = Array.prototype.enumerate || function*() {
-  for (let el of enumerate(this)) {
-    yield el;
-  }
+  yield* enumerate(this);
 };
 
 /**
@@ -89,9 +87,7 @@ Array.prototype.remove = Array.prototype.remove || function(start, stop) {
  *                      a reversed order
  */
 Array.prototype.reversed = Array.prototype.reversed || function*() {
-  for (let el of reversed(this)) {
-    yield el;
-  }
+  yield* reversed(this);
 };
 
 /**
@@ -111,7 +107,7 @@ Array.prototype.sortBy = Array.prototype.sortBy || function(evaluator) {
  * @param {iterable} source an iterable object
  * @returns {array} the array from the generator function
  */
-let array = Array.from;
+const array = Array.from;
 
 array.enumerate = enumerate;
 array.remove = remove;

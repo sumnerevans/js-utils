@@ -1,6 +1,6 @@
-let assert = require('assert');
-let gen = require('../Generator');
-let list = require('../List');
+const assert = require('assert');
+const gen = require('../Generator');
+const list = require('../List');
 
 describe('Generator', () => {
   describe('#range()', () => {

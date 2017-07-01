@@ -1,5 +1,5 @@
-let assert = require('assert');
-let string = require('../String');
+const assert = require('assert');
+const string = require('../String');
 
 describe('String', () => {
   describe('#format()', () => {
