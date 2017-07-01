@@ -8,7 +8,6 @@ describe('List', () => {
       yield 1;
       yield 2;
       yield 3;
-      return;
     };
     assert.deepEqual([1, 2, 3], list(generator()));
     assert.deepEqual(['t', 'e', 's', 't'], list('test'));

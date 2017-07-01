@@ -5,7 +5,7 @@ const istanbul = require('gulp-istanbul');
 const mocha = require('gulp-mocha');
 
 const config = {
-  warningThreshold: 10,
+  linterWarningThreshold: 10,
   src: {
     js: '[!gulpfile]*.js',
     tests: 'test/*.js',
@@ -26,10 +26,10 @@ gulp.task('lint', () =>
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.results(results => {
-      if(results.warningCount > config.warningThreshold) {
+      if (results.warningCount > config.linterWarningThreshold) {
         throw new Error(
           'ESLint: Warning count too high\n' +
-          `Warning count must be under ${config.warningThreshold}\n` +
+          `Warning count must be under ${config.linterWarningThreshold}\n` +
           `Saw ${results.warningCount} warnings.`
         );
       }

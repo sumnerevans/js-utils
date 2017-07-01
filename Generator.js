@@ -21,8 +21,6 @@ let range = function*(begin, end, step) {
   for (let i = start; i < stop; i = i + increment) {
     yield i;
   }
-
-  return;
 };
 
 module.exports = {

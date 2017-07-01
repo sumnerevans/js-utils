@@ -34,10 +34,9 @@ let remove = function(array, start, end) {
  *                      a reversed order
  */
 let reversed = function*(array) {
-  for(let i = array.length - 1; i >= 0; i--) {
+  for (let i = array.length - 1; i >= 0; i--) {
     yield array[i];
   }
-  return;
 };
 
 /**
@@ -112,13 +111,7 @@ Array.prototype.sortBy = Array.prototype.sortBy || function(evaluator) {
  * @param {iterable} source an iterable object
  * @returns {array} the array from the generator function
  */
-let array = function(source) {
-  let arr = [];
-  for (let el of source) {
-    arr.push(el);
-  }
-  return arr;
-};
+let array = Array.from;
 
 array.enumerate = enumerate;
 array.remove = remove;

@@ -34,7 +34,9 @@ describe('Linq', () => {
   });
 
   describe('#elementAt()', () => {
-    //TODO: assert(false);
+    it('should throw an error when the element is not in bounds', () => {
+      assert(false);
+    });
   });
 
   describe('#elementAtOrDefault()', () => {
@@ -68,7 +70,7 @@ describe('Linq', () => {
   });
 
   describe('#firstOrDefault()', () => {
-    // assert(false);
+    //TODO: assert(false);
   });
 
   describe('#last()', () => {
@@ -145,22 +147,15 @@ describe('Linq', () => {
   describe('#orderBy()', () => {
     it('should return a list of lists sorted by the lambda', () => {
       let intArray = list(gen.range(1, 7));
-      arrayDeepEqual([
-        [2, 4, 6],
-        [1, 3, 5],
-      ], intArray.orderBy(x => x % 2));
-      arrayDeepEqual([
-        [2, 4, 6],
-        [1, 3, 5],
-      ], linq.orderBy(intArray, x => x % 2));
+      arrayDeepEqual([[2, 4, 6], [1, 3, 5]], intArray.orderBy(x => x % 2));
+      arrayDeepEqual([[2, 4, 6], [1, 3, 5]],
+        linq.orderBy(intArray, x => x % 2));
     });
 
     it('should work with negative numbers', () => {
       let intArray = list(gen.range(-4, 5));
-      arrayDeepEqual([
-        [1, 2, 3, 4],
-        [-4, -3, -2, -1, 0],
-      ], intArray.orderBy(x => x > 0 ? 0 : 1));
+      arrayDeepEqual([[1, 2, 3, 4], [-4, -3, -2, -1, 0]],
+        intArray.orderBy(x => x > 0 ? 0 : 1));
     });
 
     it('should return an empty list when an empty list is given', () => {
@@ -199,14 +194,10 @@ describe('Linq', () => {
   describe('#thenBy()', () => {
     it('should return a list of sorted lists using the lambda', () => {
       let intArray = [4, 3, 6, 2, 1, 5];
-      arrayDeepEqual([
-        [[6], [4], [2]],
-        [[5], [3], [1]],
-      ], intArray.orderBy(x => x % 2).thenBy(x => -x));
-      arrayDeepEqual([
-        [[6], [4], [2]],
-        [[5], [3], [1]],
-      ], linq.thenBy(linq.orderBy(intArray, x => x % 2), x => -x));
+      arrayDeepEqual([[[6], [4], [2]], [[5], [3], [1]]],
+        intArray.orderBy(x => x % 2).thenBy(x => -x));
+      arrayDeepEqual([[[6], [4], [2]], [[5], [3], [1]]],
+        linq.thenBy(linq.orderBy(intArray, x => x % 2), x => -x));
     });
 
     it('should return an empty list when an empty list is given', () => {
@@ -260,21 +251,13 @@ describe('Linq', () => {
     it(
       'should return a list of the elements filtered by the evaluator',
       () => {
-        let arr = [
-          { a: true, id: 1 },
-          { b: true, id: 2 },
-          { a: true, id: 3 },
-        ];
+        let arr = [{ a: true, id: 1 }, { b: true, id: 2 }, { a: true, id: 3 }];
 
-        assert.deepEqual([
-          { a: true, id: 1 },
-          { a: true, id: 3 },
-        ], linq.where(arr, el => el.a));
+        assert.deepEqual([{ a: true, id: 1 }, { a: true, id: 3 }],
+          linq.where(arr, el => el.a));
 
-        assert.deepEqual([
-          { a: true, id: 1 },
-          { b: true, id: 2 },
-        ], linq.where(arr, el => el.id < 3));
+        assert.deepEqual([{ a: true, id: 1 }, { b: true, id: 2 }],
+          linq.where(arr, el => el.id < 3));
 
         let numbers = list(gen.range(3, 10));
         assert.deepEqual([5, 6, 7], numbers.where(x => x > 4 && x < 8));
