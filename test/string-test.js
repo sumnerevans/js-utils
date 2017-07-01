@@ -1,35 +1,47 @@
 let assert = require('assert');
 let string = require('../String');
 
-describe('String', function() {
-  describe('#format()', function() {
-    it('should return an empty string if none given', function() {
+describe('String', () => {
+  describe('#format()', () => {
+    it('should return an empty string if none given', () => {
       assert.equal('', ''.format(1));
       assert.equal('', string.format(''));
       assert.equal('', ''.format(10));
     });
 
-    it('should format strings properly', function() {
+    it('should format strings properly', () => {
       assert.equal('This is cool',
         '{0} {1} cool'.format('This', 'is'));
       assert.equal('100', '{0}0'.format(10));
       assert.equal('foo = bar', '{0}'.format({
         foo: 'bar',
         toString: function() {
-          return 'foo = ' + this.foo;
+          return `foo = ${this.foo}`;
         },
       }));
     });
   });
 
-  describe('#ord()', function() {
-    it('should return the ordinal value of the given char', function() {
+  describe('#join', () => {
+    it('should return an empty string if the array is empty', () => {
+      assert.deepEqual('', 'test'.join([]));
+      assert.deepEqual('', string.join([], 'test'));
+    });
+
+    it('should return a joined string', () => {
+      assert.deepEqual('1, 2, 3', ', '.join([1, 2, 3]));
+      assert.deepEqual('1, 2, 3', string.join([1, 2, 3], ', '));
+    });
+  });
+
+  describe('#ord()', () => {
+    it('should return the ordinal value of the given char', () => {
       assert.equal(10, '\n'.ord());
       assert.equal(97, string.ord('a'));
       assert.equal(99, string.ord('c'));
     });
 
-    it('blow up if a single char is not given', function() {
+    it('blow up if a single char is not given', () => {
       assert.throws('string'.ord,
         'String.ord expected a string of length 1.');
       assert.throws(''.ord,

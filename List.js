@@ -27,6 +27,20 @@ let remove = function(array, start, end) {
 };
 
 /**
+ * Returns a generator that iterates through the list backwards.
+ *
+ * @param {array} array the array to iterate on
+ * @returns {generator} a generator which outputs the elements of the array in
+ *                      a reversed order
+ */
+let reversed = function*(array) {
+  for(let i = array.length - 1; i >= 0; i--) {
+    yield array[i];
+  }
+  return;
+};
+
+/**
  * Sort the array according to the given evaluator function.
  *
  * @param {array} array the array to sort
@@ -70,6 +84,18 @@ Array.prototype.remove = Array.prototype.remove || function(start, stop) {
 };
 
 /**
+ * Returns a generator that iterates through the list backwards.
+ *
+ * @returns {generator} a generator which outputs the elements of the array in
+ *                      a reversed order
+ */
+Array.prototype.reversed = Array.prototype.reversed || function*() {
+  for (let el of reversed(this)) {
+    yield el;
+  }
+};
+
+/**
  * Sort the array according to the given evaluator function.
  *
  * @param {function} evaluator the function to use to evaluate the value of
@@ -96,6 +122,7 @@ let array = function(source) {
 
 array.enumerate = enumerate;
 array.remove = remove;
+array.reversed = reversed;
 array.sortBy = sortBy;
 
 module.exports = array;

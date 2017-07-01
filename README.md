@@ -8,5 +8,4 @@ Some helpful JavaScript prototype overloads.
 
 
 ## Running Tests
-Run `mocha` from the root directory to run the tests. Read more about the Mocha
-test framework [here](http://mochajs.org/).
+Run `npm test`.

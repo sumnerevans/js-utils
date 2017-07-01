@@ -1,13 +1,64 @@
 require('./List');
 
 /**
+ * Calaculate the average of the elements of the array using the given
+ * evaluator.
+ *
+ * @param {array} array the array to calculate the average for
+ * @param {function} [evaluator=el=>el] the function to evaluate the elements of
+ *                                      the array with
+ * @returns {number} the average
+ */
+let average = function(array, evaluator = el => el) {
+  return array.sum(evaluator) / array.length;
+};
+
+/**
+ * Gets the first value in the array which matches the given evaluator.
+ *
+ * @param {array} array the array to find the first item of
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @returns {*} the first element of the array that matches the evaluator
+ * @throws Error Sequence contains no matching element
+ */
+let first = function(array, evaluator = () => true) {
+  for (let el of array) {
+    if (evaluator(el)) {
+      return el;
+    }
+  }
+
+  throw Error('Sequence contains no matching element');
+};
+
+/**
+ * Gets the last value in the array which matches the given evaluator.
+ *
+ * @param {array} array the array to find the last item of
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @returns {*} the last element of the array that matches the evaluator
+ * @throws Error Sequence contains no matching element
+ */
+let last = function(array, evaluator = () => true) {
+  for (let el of array.reversed()) {
+    if (evaluator(el)) {
+      return el;
+    }
+  }
+
+  throw Error('Sequence contains no matching element');
+};
+
+/**
  * Returns the maximum element in the array.
  * @param {array}    arr         the array to find the minimum on
- * @param {function} [evaluator] the function to use to evaluate the value of
- *                               each element of the array.
+ * @param {function} [evaluator=el=>el] the function to use to evaluate the
+ *                                      value of each element of the array.
  * @returns {*} the maximum element in the array
  */
-let max = (arr, evaluator = el => el) => {
+let max = function(arr, evaluator = el => el) {
   let maxEl = null;
   let maxEval = null;
 
@@ -32,11 +83,11 @@ let max = (arr, evaluator = el => el) => {
  * Returns the minimum element in the array.
  *
  * @param {array}    arr         the array to find the maximum on
- * @param {function} [evaluator] the function to use to evaluate the value of
- *                               each element of the array.
+ * @param {function} [evaluator=el=>el] the function to use to evaluate the
+ *                                      value of each element of the array.
  * @returns {*} the minimum element in the array
  */
-let min = (arr, evaluator = el => el) => {
+let min = function(arr, evaluator = el => el) {
   let minEl = null;
   let minEval = null;
 
@@ -65,7 +116,7 @@ let min = (arr, evaluator = el => el) => {
  * @param {function} evaluator the function to use to evaluate elements
  * @returns {array} the sorted array
  */
-let orderBy = (array, evaluator) => {
+let orderBy = function(array, evaluator) {
   // Group the elements by their evaluated value.
   array.sortBy(evaluator);
 
@@ -88,6 +139,22 @@ let orderBy = (array, evaluator) => {
 };
 
 /**
+ * Sums the elements of the array using the given evaluator.
+ *
+ * @param {array} array the array to calculate the sum for
+ * @param {function} [evaluator=el=>el] a function to evaluate each element of
+ *                                      the array for the summation
+ * @returns {number} the sum of the elements
+ */
+let sum = function(array, evaluator = el => el) {
+  let total = 0;
+  for (let el of array) {
+    total += evaluator(el);
+  }
+  return total;
+};
+
+/**
  * Sorts the individual arrays within an ordered array of arrays.
  *
  * @param {array} array the array to sort
@@ -95,7 +162,7 @@ let orderBy = (array, evaluator) => {
  *                             the sub-arrays
  * @returns {array} the sorted array of arrays
  */
-let thenBy = (array, evaluator) => {
+let thenBy = function(array, evaluator) {
   for (let [i, el] of array.enumerate()) {
     array[i] = el.orderBy(evaluator);
   }
@@ -106,48 +173,77 @@ let thenBy = (array, evaluator) => {
 };
 
 /**
- * Spreads an ordered list iut into a single list.
+ * Spreads an ordered list out into a single list.
  *
  * @param {array} array the grouped array to spread out
  * @returns {array} the compressed array
  */
-let toList = (array) => {
-  let spread = (arr, level) => {
+let toList = function(array) {
+  let flatten = (arr, level) => {
     if (!level) {
       return arr;
     }
 
-    // Recursively call spread until we get to the base level.
-    let spreaded = [];
-    for (let el of arr) {
-      spreaded = spreaded.concat(spread(el, level - 1));
-    }
-    return spreaded;
+    // Recursively flatten until we get to the base level.
+    return arr.reduce(
+      (compressed, current) => compressed.concat(flatten(current, level - 1)),
+      []);
   };
 
-  return spread(array, array.orderingLevel);
+  return flatten(array, array.orderingLevel);
 };
 
 /**
- * Yields the elements of the array for which the evaluator returns true.
+ * Returns the elements of the array for which the evaluator returns true.
  *
- * @param {array} arr the array
- * @param {function} evaluator=()=>true the function to evaluate the elements
- * @returns {generator} the elements of the array for which the evaluator returns true.
+ * @param {array} array the array
+ * @param {function} evaluator the function to evaluate the elements
+ * @returns {array} the elements of the array for which the evaluator returns
+ *                  true.
  */
-let where = function*(arr, evaluator = () => true) {
-  for (let el of arr) {
-    if (evaluator(el)) {
-      yield el;
-    }
-  }
+let where = (array, evaluator) => array.where(evaluator);
+
+/**
+ * Calaculate the average of the elements of the array using the given
+ * evaluator.
+ *
+ * @param {function} [evaluator=el=>el] the function to evaluate the elements
+ *                                      of the array with
+ * @returns {number} the average
+ */
+Array.prototype.average = Array.prototype.average || function(evaluator) {
+  return average(this, evaluator);
+};
+
+/**
+ * Gets the first value in the array which matches the given evaluator.
+ *
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @returns {*} the first element of the array that matches the evaluator
+ * @throws Error Sequence contains no matching element
+ */
+Array.prototype.first = Array.prototype.first || function(evaluator) {
+  return first(this, evaluator);
+};
+
+/**
+ * Gets the last value in the array which matches the given evaluator.
+ *
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @returns {*} the last element of the array that matches the evaluator
+ * @throws Error Sequence contains no matching element
+ */
+Array.prototype.last = Array.prototype.last || function(evaluator) {
+  return last(this, evaluator);
 };
 
 /**
  * Returns the maximum element in the array.
  *
- * @param {function} [evaluator] the function to use to evaluate the value of
- *                               each element of the array.
+ * @param {function} [evaluator=el=>el] the function to use to evaluate the
+ *                                      value of each element of the array.
  * @returns {*} the maximum element in the array
  */
 Array.prototype.max = Array.prototype.max || function(evaluator) {
@@ -157,8 +253,8 @@ Array.prototype.max = Array.prototype.max || function(evaluator) {
 /**
  * Returns the minimum element in the array.
  *
- * @param {function} [evaluator] the function to use to evaluate the value of
- *                               each element of the array.
+ * @param {function} [evaluator=el=>el] the function to use to evaluate the
+ *                                      value of each element of the array.
  * @returns {*} the minimum element in the array
  */
 Array.prototype.min = Array.prototype.min || function(evaluator) {
@@ -177,6 +273,17 @@ Array.prototype.orderBy = Array.prototype.orderBy || function(evaluator) {
 };
 
 /**
+ * Sums the elements of the array using the given evaluator.
+ *
+ * @param {function} [evaluator=el=>el] a function to evaluate each element of
+ *                                      the array for the summation
+ * @returns {number} the sum of the elements
+ */
+Array.prototype.sum = Array.prototype.sum || function(evaluator) {
+  return sum(this, evaluator);
+};
+
+/**
  * Sorts the individual arrays within an ordered array of arrays.
  *
  * @param {function} evaluator the function to use to evaluate the elements of
@@ -187,26 +294,33 @@ Array.prototype.thenBy = Array.prototype.thenBy || function(evaluator) {
   return thenBy(this, evaluator);
 };
 
-Array.prototype.toList = Array.prototype.toList || function(evaluator) {
-  return toList(this, evaluator);
+/**
+ * Spreads an ordered list out into a single list.
+ *
+ * @returns {array} the compressed array
+ */
+Array.prototype.toList = Array.prototype.toList || function() {
+  return toList(this);
 };
 
 /**
- * Yields the elements of the array for which the evaluator returns true.
+ * Returns the elements of the array for which the evaluator returns true.
  *
- * @param {function} evaluator=el=>el the function to evaluate the elements
- * @returns {generator} the elements of the array for which the evaluator returns true.
+ * @param {function} evaluator the function to use to evaluate the value of
+ *                             each element of the array.
+ * @returns {array} the elements of the array for which the evaluator returns
+ *                  true.
  */
-Array.prototype.where = Array.prototype.where || function*(evaluator) {
-  for (let el of where(this, evaluator)) {
-    yield el;
-  }
-};
+Array.prototype.where = Array.prototype.where || Array.prototype.filter;
 
 module.exports = {
+  average: average,
+  first: first,
+  last: last,
   max: max,
   min: min,
   orderBy: orderBy,
+  sum: sum,
   thenBy: thenBy,
   toList: toList,
   where: where,

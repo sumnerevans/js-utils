@@ -11,7 +11,7 @@
 let format = function(str, ...formatArgs) {
   let formattedString = str;
   for (let i = 0; i < formatArgs.length; i++) {
-    let reg = new RegExp('\\{' + i + '\\}', 'gm');
+    let reg = new RegExp(`\\{${i}\\}`, 'gm');
 
     let replacementString = formatArgs[i];
     if (replacementString.toString) {
@@ -22,6 +22,17 @@ let format = function(str, ...formatArgs) {
   }
 
   return formattedString;
+};
+
+/**
+ * Joins an array together using the string as the separator.
+ *
+ * @param {string} separator the array to join
+ * @param {array} array the array to join
+ * @returns {string} the joined array
+ */
+let join = function(separator, array) {
+  return array.join(separator);
 };
 
 /**
@@ -52,6 +63,16 @@ String.prototype.format = String.prototype.format || function(...formatArgs) {
 };
 
 /**
+ * Joins an array together using the string as the separator.
+ *
+ * @param {array} array the array to join
+ * @returns {string} the joined array
+ */
+String.prototype.join = String.prototype.join || function(array) {
+  return join(this, array);
+};
+
+/**
  * Get the ordinal (ASCII) value of the given character.
  *
  * @returns {number} the ordinal value of the character.
@@ -62,5 +83,6 @@ String.prototype.ord = String.prototype.ord || function() {
 
 module.exports = {
   format: format,
+  join: join,
   ord: ord,
 };
