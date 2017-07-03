@@ -48,6 +48,11 @@ const ord = function(str) {
   return str.charCodeAt(0);
 };
 
+// Comparison Functions
+const comparers = {
+  ignoreCase: (a, b) => a.toLowerCase() === b.toLowerCase(),
+};
+
 // Add the functions to the String prototype.
 /**
  * Formats a string given a set of fomat arguments.
@@ -82,6 +87,7 @@ String.prototype.ord = String.prototype.ord || function() {
 };
 
 module.exports = {
+  comparers: comparers,
   format: format,
   join: join,
   ord: ord,

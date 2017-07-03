@@ -234,6 +234,42 @@ const orderBy = function(array, evaluator) {
   return orderedArray;
 };
 
+/**
+ * Compares the elements of the array using the given comparator.
+ *
+ * @param {array} array the first array to compare
+ * @param {array} otherArray the second array to compare
+ * @param {function} [comparator=(a, b)=>a===b] the function to use to compare
+ *                                              the elements of the array
+ * @returns {bool} whether or not the two arrays are equal
+ */
+const sequenceEqual = function(array, otherArray,
+                               comparator = (a, b) => a === b) {
+  if (array.length !== otherArray.length) {
+    return false;
+  }
+
+  for (const [i, el] of array.enumerate()) {
+    if (!comparator(el, otherArray[i])) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+
+/**
+ * Gets the element that matches the lambda, if no element or multiple element
+ * match, it will throw an exception.
+ *
+ * @param {array} array the array to search in
+ * @param {function} [evaluator=()=>true] the evaluator to determine which
+ *                                        element to grab
+ * @returns {*} the element that matched
+ * @throws MultipeItemsMatchException
+ * @throws NoItemFoundException
+ */
 const single = function(array, evaluator = () => true) {
   let returnVal;
   for (const el of array) {
@@ -252,6 +288,18 @@ const single = function(array, evaluator = () => true) {
   return returnVal;
 };
 
+/**
+ * Gets the element that matches the lambda, if multiple elements match, it
+ * will throw an exception. If no element matches, the default will be
+ * returned.
+ *
+ * @param {array} array the array to search in
+ * @param {function} [evaluator=()=>true] the evaluator to determine which
+ *                                        element to grab
+ * @param {*} defaultVal the default value to return if no element matches
+ * @returns {*} the element that matched
+ * @throws MultipeItemsMatchException
+ */
 const singleOrDefault = function(array, evaluator = () => true,
                                  defaultVal = null) {
   if (typeof evaluator !== 'function' && defaultVal === null) {
@@ -457,16 +505,45 @@ Array.prototype.orderBy = Array.prototype.orderBy || function(evaluator) {
   return orderBy(this, evaluator);
 };
 
-Array.prototype.sum = Array.prototype.sum || function(evaluator) {
-  return sum(this, evaluator);
-};
+/**
+ * Compares the elements of the array using the given comparator.
+ *
+ * @param {array} otherArray the second array to compare
+ * @param {function} [comparator=(a, b)=>a===b] the function to use to compare
+ *                                              the elements of the array
+ * @returns {bool} whether or not the two arrays are equal
+ */
 
-// TODO: JSDoc
+Array.prototype.sequenceEqual = Array.prototype.sequenceEqual ||
+  function(otherArray, comparator) {
+    return sequenceEqual(this, otherArray, comparator);
+  };
+
+/**
+ * Gets the element that matches the lambda, if no element or multiple element
+ * match, it will throw an exception.
+ *
+ * @param {function} [evaluator=()=>true] the evaluator to determine which
+ *                                        element to grab
+ * @returns {*} the element that matched
+ * @throws MultipeItemsMatchException
+ * @throws NoItemFoundException
+ */
 Array.prototype.single = Array.prototype.single || function(evaluator) {
   return single(this, evaluator);
 };
 
-// TODO: JSDoc
+/**
+ * Gets the element that matches the lambda, if multiple elements match, it
+ * will throw an exception. If no element matches, the default will be
+ * returned.
+ *
+ * @param {function} [evaluator=()=>true] the evaluator to determine which
+ *                                        element to grab
+ * @param {*} defaultVal the default value to return if no element matches
+ * @returns {*} the element that matched
+ * @throws MultipeItemsMatchException
+ */
 Array.prototype.singleOrDefault = Array.prototype.singleOrDefault ||
   function(evaluator, defaultVal) {
     return singleOrDefault(this, evaluator, defaultVal);
@@ -524,6 +601,7 @@ module.exports = {
   max: max,
   min: min,
   orderBy: orderBy,
+  sequenceEqual: sequenceEqual,
   single: single,
   singleOrDefault: singleOrDefault,
   sum: sum,

@@ -2,6 +2,22 @@ const assert = require('assert');
 const string = require('../String');
 
 describe('String', () => {
+  describe('comparers', () => {
+    describe('#ignoreCase()', () => {
+      it('should return false when the strings don\'t match (case insensitive)',
+        () => {
+          assert(string.comparers.ignoreCase('HELLO', 'hello'));
+          assert(string.comparers.ignoreCase('thI$ |s ζ0oι', 'THI$ |S ζ0Oι'));
+        });
+
+      it('should return false when the strings do not match (case insensitive)',
+        () => {
+          assert(!string.comparers.ignoreCase('HELLO', 'HELLO!'));
+          assert(!string.comparers.ignoreCase('1234', '₁₂₃â'));
+        });
+    });
+  });
+
   describe('#format()', () => {
     it('should return an empty string if none given', () => {
       assert.equal('', ''.format(1));

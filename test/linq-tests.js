@@ -2,6 +2,7 @@ const assert = require('assert');
 const gen = require('../Generator');
 const linq = require('../Linq');
 const list = require('../List');
+const string = require('../String');
 const util = require('../Util');
 
 const arrayDeepEqual = (expected, actual) => {
@@ -256,7 +257,21 @@ describe('Linq', () => {
   });
 
   describe('#sequenceEqual()', () => {
-    // TODO: assert(false);
+    it('should compare the individual elements of the array', () => {
+      assert([1, 3, 5].sequenceEqual([1, 3, 5]));
+      const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }];
+      assert(objArray.sequenceEqual([objArray[0], objArray[1], objArray[2]]));
+
+      assert(![1, 2, 3].sequenceEqual([1, 3]));
+      assert(![1, 2, 3].sequenceEqual([1, 3, 2]));
+    });
+
+    it('should use the given lambda for comparisons', () => {
+      assert(['hello', 'test'].sequenceEqual(['HELLO', 'TEST'],
+        string.comparers.ignoreCase));
+      assert(!['goodbye', 'test'].sequenceEqual(['HELLO', 'TEST'],
+        string.comparers.ignoreCase));
+    });
   });
 
   describe('#single()', () => {
