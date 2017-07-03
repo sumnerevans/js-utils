@@ -35,9 +35,10 @@ gulp.task('lint', () =>
       }
     }))
     .pipe(eslint.failAfterError())
+    .once('error', () => process.exit(1))
 );
 
-gulp.task('test', ['lint', 'istanbul'], () =>
+gulp.task('test', ['istanbul'], () =>
   gulp.src(config.src.tests)
     .pipe(mocha())
     .once('error', () => process.exit(1))
@@ -45,9 +46,9 @@ gulp.task('test', ['lint', 'istanbul'], () =>
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 );
 
-gulp.task('codecov', ['test'], () =>
+gulp.task('codecov', ['lint', 'test'], () =>
   gulp.src(config.src.codecov)
     .pipe(codecov())
 );
 
-gulp.task('default', ['test']);
+gulp.task('default', ['lint', 'test']);

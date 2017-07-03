@@ -1,4 +1,8 @@
 require('./List');
+const IndexOutOfBoundsException = require('./Exceptions').IndexOutOfBoundsException;
+const RequiredParameterException = require('./Exceptions').RequiredParameterException;
+const MultipeItemsMatchException = require('./Exceptions').MultipeItemsMatchException;
+const NoItemFoundException = require('./Exceptions').NoItemFoundException;
 
 /**
  * Calaculate the average of the elements of the array using the given
@@ -11,6 +15,49 @@ require('./List');
  */
 const average = function(array, evaluator = el => el) {
   return array.sum(evaluator) / array.length;
+};
+
+/**
+ * Gets the element at the given index or blows up if the index is out of the
+ * bounds of the array.
+ *
+ * @param {array} array the array to get an element from
+ * @param {number} index the index
+ * @returns {*} the element at the given index
+ * @throws IndexOutOfBoundsException
+ * @throws RequiredParameterException
+ */
+const elementAt = function(array, index) {
+  if (typeof index === 'undefined') {
+    throw new RequiredParameterException('index');
+  }
+
+  if (index < 0 || index > array.length - 1) {
+    throw new IndexOutOfBoundsException();
+  }
+  return array[index];
+};
+
+/**
+ * Gets the element at the given index or returns the default value if the
+ * index is out of bounds.
+ *
+ * @param {array} array the array to get the element from
+ * @param {number} index the index
+ * @param {*} [defaultVal=null] the default value
+ * @returns {*} the element at the given index or the default value
+ * @throws RequiredParameterException
+ */
+const elementAtOrDefault = function(array, index, defaultVal = null) {
+  if (typeof index === 'undefined') {
+    throw new RequiredParameterException('index');
+  }
+
+  try {
+    return elementAt(array, index);
+  } catch (e) {
+    return defaultVal;
+  }
 };
 
 /**
@@ -33,6 +80,30 @@ const first = function(array, evaluator = () => true) {
 };
 
 /**
+ * Gets the first value in the array which matches the given evaluator or if no
+ * element is found, the default.
+ *
+ * @param {array} array the array to find the first item of
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @param {*} [defaultVal=null] the default value to return
+ * @returns {*} the first element of the array that matches the evaluator
+ */
+const firstOrDefault = function(array, evaluator = () => true,
+                                defaultVal = null) {
+  if (typeof evaluator !== 'function' && defaultVal === null) {
+    defaultVal = evaluator;
+    evaluator = () => true;
+  }
+
+  try {
+    return first(array, evaluator);
+  } catch (e) {
+    return defaultVal;
+  }
+};
+
+/**
  * Gets the last value in the array which matches the given evaluator.
  *
  * @param {array} array the array to find the last item of
@@ -50,6 +121,31 @@ const last = function(array, evaluator = () => true) {
 
   throw Error('Sequence contains no matching element');
 };
+
+/**
+ * Gets the last value in the array which matches the given evaluator or if no
+ * element is found, the default.
+ *
+ * @param {array} array the array to find the last item of
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @param {*} [defaultVal=null] the default value to return
+ * @returns {*} the last element of the array that matches the evaluator
+ */
+const lastOrDefault = function(array, evaluator = () => true,
+                               defaultVal = null) {
+  if (typeof evaluator !== 'function' && defaultVal === null) {
+    defaultVal = evaluator;
+    evaluator = () => true;
+  }
+
+  try {
+    return last(array, evaluator);
+  } catch (e) {
+    return defaultVal;
+  }
+};
+
 
 /**
  * Returns the maximum element in the array.
@@ -138,6 +234,41 @@ const orderBy = function(array, evaluator) {
   return orderedArray;
 };
 
+const single = function(array, evaluator = () => true) {
+  let returnVal;
+  for (const el of array) {
+    if (evaluator(el)) {
+      if (typeof returnVal !== 'undefined') {
+        throw new MultipeItemsMatchException();
+      }
+
+      returnVal = el;
+    }
+  }
+
+  if (typeof returnVal === 'undefined') {
+    throw new NoItemFoundException();
+  }
+  return returnVal;
+};
+
+const singleOrDefault = function(array, evaluator = () => true,
+                                 defaultVal = null) {
+  if (typeof evaluator !== 'function' && defaultVal === null) {
+    defaultVal = evaluator;
+    evaluator = () => true;
+  }
+
+  try {
+    return single(array, evaluator);
+  } catch (e) {
+    if (e instanceof NoItemFoundException) {
+      return defaultVal;
+    }
+    throw e;
+  }
+};
+
 /**
  * Sums the elements of the array using the given evaluator.
  *
@@ -216,6 +347,32 @@ Array.prototype.average = Array.prototype.average || function(evaluator) {
 };
 
 /**
+ * Gets the element at the given index or blows up if the index is out of the
+ * bounds of the array.
+ *
+ * @param {number} index the index
+ * @returns {*} the element at the given index
+ * @throws IndexOutOfBoundsException
+ */
+Array.prototype.elementAt = Array.prototype.elementAt || function(index) {
+  return elementAt(this, index);
+};
+
+/**
+ * Gets the element at the given index or returns the default value if the
+ * index is out of bounds.
+ *
+ * @param {number} index the index
+ * @param {*} [defaultVal=null] the default value
+ * @returns {*} the element at the given index or the default value
+ * @throws RequiredParameterException
+ */
+Array.prototype.elementAtOrDefault = Array.prototype.elementAtOrDefault ||
+  function(index, defaultVal) {
+    return elementAtOrDefault(this, index, defaultVal);
+  };
+
+/**
  * Gets the first value in the array which matches the given evaluator.
  *
  * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
@@ -228,6 +385,20 @@ Array.prototype.first = Array.prototype.first || function(evaluator) {
 };
 
 /**
+ * Gets the first value in the array which matches the given evaluator or if no
+ * element is found, the default.
+ *
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @param {*} [defaultVal=null] the default value to return
+ * @returns {*} the first element of the array that matches the evaluator
+ */
+Array.prototype.firstOrDefault = Array.prototype.firstOrDefault ||
+  function(evaluator, defaultVal) {
+    return firstOrDefault(this, evaluator, defaultVal);
+  };
+
+/**
  * Gets the last value in the array which matches the given evaluator.
  *
  * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
@@ -238,6 +409,20 @@ Array.prototype.first = Array.prototype.first || function(evaluator) {
 Array.prototype.last = Array.prototype.last || function(evaluator) {
   return last(this, evaluator);
 };
+
+/**
+ * Gets the last value in the array which matches the given evaluator or if no
+ * element is found, the default.
+ *
+ * @param {evaluator} [evaluator=()=>true] the function to use to evaluate the
+ *                                         elements of the array
+ * @param {*} [defaultVal=null] the default value to return
+ * @returns {*} the last element of the array that matches the evaluator
+ */
+Array.prototype.lastOrDefault = Array.prototype.lastOrDefault ||
+  function(evaluator, defaultVal) {
+    return lastOrDefault(this, evaluator, defaultVal);
+  };
 
 /**
  * Returns the maximum element in the array.
@@ -271,6 +456,21 @@ Array.prototype.min = Array.prototype.min || function(evaluator) {
 Array.prototype.orderBy = Array.prototype.orderBy || function(evaluator) {
   return orderBy(this, evaluator);
 };
+
+Array.prototype.sum = Array.prototype.sum || function(evaluator) {
+  return sum(this, evaluator);
+};
+
+// TODO: JSDoc
+Array.prototype.single = Array.prototype.single || function(evaluator) {
+  return single(this, evaluator);
+};
+
+// TODO: JSDoc
+Array.prototype.singleOrDefault = Array.prototype.singleOrDefault ||
+  function(evaluator, defaultVal) {
+    return singleOrDefault(this, evaluator, defaultVal);
+  };
 
 /**
  * Sums the elements of the array using the given evaluator.
@@ -315,11 +515,17 @@ Array.prototype.where = Array.prototype.where || Array.prototype.filter;
 
 module.exports = {
   average: average,
+  elementAt: elementAt,
+  elementAtOrDefault: elementAtOrDefault,
   first: first,
+  firstOrDefault: firstOrDefault,
   last: last,
+  lastOrDefault: lastOrDefault,
   max: max,
   min: min,
   orderBy: orderBy,
+  single: single,
+  singleOrDefault: singleOrDefault,
   sum: sum,
   thenBy: thenBy,
   toList: toList,

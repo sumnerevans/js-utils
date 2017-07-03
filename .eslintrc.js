@@ -45,7 +45,7 @@ module.exports = {
     // These rules relate to possible syntax or logic errors in JavaScript code
     //
     'for-direction': 2,
-    'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
+    'no-extra-parens': [2, 'all', { nestedBinaryExpressions: false }],
     'no-template-curly-in-string': 1,
     'valid-jsdoc': 2,
 
@@ -60,7 +60,7 @@ module.exports = {
     'class-methods-use-this': 1,
     'consistent-return': 2,
     curly: 2,
-    'default-case': 2,
+    'default-case': 1,
     'dot-location': [2, 'property'],
     'dot-notation': 2,
     eqeqeq: 2,
@@ -68,7 +68,7 @@ module.exports = {
     'no-alert': 2,
     'no-caller': 2,
     'no-div-regex': 2,
-    'no-else-return': 2,
+    'no-else-return': 1,
     'no-empty-function': 1,
     'no-eq-null': 2,
     'no-eval': 2,
@@ -88,7 +88,6 @@ module.exports = {
     'no-new-func': 2,
     'no-new-wrappers': 2,
     'no-octal-escape': 2,
-    'no-param-reassign': 2,
     'no-proto': 2,
     'no-return-assign': 2,
     'no-return-await': 2,
@@ -110,9 +109,9 @@ module.exports = {
     'prefer-promise-reject-errors': 2,
     radix: 2,
     'require-await': 2,
-    'vars-on-top': 2,
+    'vars-on-top': 1,
     'wrap-iife': [2, 'inside'],
-    yoda: 2, // Require or disallow Yoda conditions
+    yoda: 1, // Require or disallow Yoda conditions
 
     //
     // Strict Mode
@@ -156,7 +155,7 @@ module.exports = {
     'array-bracket-spacing': [2, 'never'],
     'block-spacing': [2, 'always'],
     'brace-style': 2,
-    camelcase: 2,
+    camelcase: 1,
     'capitalized-comments': [2, 'always', { ignoreConsecutiveComments: true }],
     'comma-dangle': [2, 'always-multiline'],
     'comma-spacing': [2, {
@@ -180,7 +179,6 @@ module.exports = {
     'key-spacing': 2,
     'keyword-spacing': 2,
     'linebreak-style': 2,
-    'lines-around-comment': 2,
     'max-len': [2, {
       ignoreUrls: true,
       ignoreStrings: true,
@@ -196,7 +194,7 @@ module.exports = {
     'no-mixed-operators': 2,
     'no-multi-assign': 2,
     'no-multiple-empty-lines': 2,
-    'no-nested-ternary': 2,
+    'no-nested-ternary': 1,
     'no-new-object': 2,
     'no-plusplus': 0,
     'no-tabs': 2,

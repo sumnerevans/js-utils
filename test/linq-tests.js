@@ -1,7 +1,8 @@
 const assert = require('assert');
-const list = require('../List');
 const gen = require('../Generator');
 const linq = require('../Linq');
+const list = require('../List');
+const util = require('../Util');
 
 const arrayDeepEqual = (expected, actual) => {
   for (const [i, x] of expected.enumerate()) {
@@ -35,12 +36,66 @@ describe('Linq', () => {
 
   describe('#elementAt()', () => {
     it('should throw an error when the element is not in bounds', () => {
-      assert(false);
+      const intArray = list(gen.range(1, 7));
+      assert.throws(() => intArray.elementAt(-1));
+      assert.throws(() => intArray.elementAt(10));
+      assert.throws(() => linq.elementAt(intArray, 10));
+    });
+
+    it('should throw an error when no param is given', () => {
+      assert.throws([].elementAt);
+    });
+
+    it('should retrieve the element at the given index', () => {
+      const intArray = list(gen.range(1, 7));
+      assert.equal(2, intArray.elementAt(1));
+      assert.equal(2, linq.elementAt(intArray, 1));
+      assert.equal(6, intArray.elementAt(5));
+      assert.equal(6, linq.elementAt(intArray, 5));
+    });
+
+    it('should retrieve the element by reference at the given index', () => {
+      const array = [{ a: 1 }, { a: 2 }];
+      assert.equal(array[0], array.elementAt(0));
     });
   });
 
   describe('#elementAtOrDefault()', () => {
-    // TODO: assert(false);
+    it('should not throw an error when the element is not in bounds', () => {
+      const intArray = list(gen.range(1, 7));
+      assert.doesNotThrow(() => intArray.elementAtOrDefault(-1, 0));
+      assert.doesNotThrow(() => intArray.elementAtOrDefault(10, 0));
+      assert.doesNotThrow(() => linq.elementAtOrDefault(intArray, 10, 0));
+    });
+
+    it('should throw an error when no param is given', () => {
+      assert.throws([].elementAtOrDefault);
+    });
+
+    it('should retrieve the element at the given index', () => {
+      const intArray = list(gen.range(1, 7));
+      assert.equal(2, intArray.elementAtOrDefault(1));
+      assert.equal(2, linq.elementAtOrDefault(intArray, 1));
+      assert.equal(6, intArray.elementAtOrDefault(5));
+      assert.equal(6, linq.elementAtOrDefault(intArray, 5));
+    });
+
+    it('should retrieve the default if the index is out of bounds', () => {
+      const intArray = list(gen.range(1, 7));
+      assert.equal(0, intArray.elementAtOrDefault(-1, 0));
+      assert.equal(0, linq.elementAtOrDefault(intArray, -1, 0));
+    });
+
+    it('should default the default to null', () => {
+      const intArray = list(gen.range(1, 7));
+      assert.equal(null, intArray.elementAtOrDefault(-1));
+      assert.equal(null, linq.elementAtOrDefault(intArray, -1));
+    });
+
+    it('should retrieve the element by reference at the given index', () => {
+      const array = [{ a: 1 }, { a: 2 }];
+      assert.equal(array[0], array.elementAtOrDefault(0));
+    });
   });
 
   describe('#first()', () => {
@@ -70,7 +125,25 @@ describe('Linq', () => {
   });
 
   describe('#firstOrDefault()', () => {
-    // TODO: assert(false);
+    it('should return the default when the array is empty', () => {
+      assert.equal(10, [].firstOrDefault(10));
+      assert.equal(10, linq.firstOrDefault([], () => 1, 10));
+    });
+
+    it('should return the default when nothing in the array matches', () => {
+      assert.equal(10, [1, 3, 5].firstOrDefault(x => x % 2 === 0, 10));
+    });
+
+    it('should behave just like #first() when an element matches', () => {
+      assert.equal(1, list(gen.range(1, 7)).firstOrDefault());
+      assert.deepEqual({ a: 4 },
+        linq.firstOrDefault([{ a: 2 }, { a: 4 }, { a: 1 }], x => x.a === 4));
+    });
+
+    it('should default the default to null', () => {
+      assert.equal(null, [].firstOrDefault());
+      assert.equal(null, [3, 1, 9].firstOrDefault(x => x % 2 === 0));
+    });
   });
 
   describe('#last()', () => {
@@ -100,13 +173,31 @@ describe('Linq', () => {
   });
 
   describe('#lastOrDefault()', () => {
-    // TODO: assert(false);
+    it('should return the default when the array is empty', () => {
+      assert.equal(10, [].lastOrDefault(10));
+      assert.equal(10, linq.lastOrDefault([], () => 1, 10));
+    });
+
+    it('should return the default when nothing in the array matches', () => {
+      assert.equal(10, [1, 3, 5].lastOrDefault(x => x % 2 === 0, 10));
+    });
+
+    it('should behave just like #last() when an element matches', () => {
+      assert.equal(6, list(gen.range(1, 7)).lastOrDefault());
+      assert.deepEqual({ a: 4 },
+        linq.lastOrDefault([{ a: 2 }, { a: 4 }, { a: 1 }], x => x.a === 4));
+    });
+
+    it('should default the default to null', () => {
+      assert.equal(null, [].lastOrDefault());
+      assert.equal(null, [9, 1, 3].lastOrDefault(x => x % 2 === 0));
+    });
   });
 
   describe('#max()', () => {
     it('should return null when the array is empty', () => {
       assert.equal(null, [].max());
-      assert.equal(null, linq.max([], () => {}));
+      assert.equal(null, linq.max([], util.emptyFn));
     });
 
     it('should return the largest number in an array of numbers', () => {
@@ -126,7 +217,7 @@ describe('Linq', () => {
   describe('#min()', () => {
     it('should return null when the array is empty', () => {
       assert.equal(null, [].min());
-      assert.equal(null, linq.min([], () => {}));
+      assert.equal(null, linq.min([], util.emptyFn));
     });
 
     it('should return the smallest number in an array of numbers', () => {
@@ -169,11 +260,42 @@ describe('Linq', () => {
   });
 
   describe('#single()', () => {
-    // TODO: assert(false);
+    it('should return the element that matches the lambda', () => {
+      assert.equal(4, [3, 4, 9].single(x => x % 2 === 0));
+    });
+
+    it('should blow up if no element matches the lambda', () => {
+      assert.throws([].single);
+      assert.throws(() => linq.single([], () => 1));
+      assert.throws(() => [2, 2].single(x => x === 3));
+    });
+
+    it('should blow up if multiple items match the lambda', () => {
+      assert.throws(() => [3, 4, 2, 1, 6, 5].single(x => x % 2 === 0));
+      assert.throws(() => [3, 3].single(x => x === 3));
+    });
   });
 
   describe('#singleOrDefault()', () => {
-    // TODO: assert(false);
+    it('should behave like #single() if one or more elements match the lambda',
+      () => {
+        assert.equal(4, [3, 4, 9].singleOrDefault(x => x % 2 === 0));
+        assert.throws(() =>
+          [3, 4, 2, 1, 6, 5].singleOrDefault(x => x % 2 === 0));
+        assert.throws(() => [3, 3].singleOrDefault(x => x === 3));
+      });
+
+    it('should return null if no element matches the lambda and no default is specified',
+      () => {
+        assert.equal(null, [].singleOrDefault());
+        assert.equal(null, linq.singleOrDefault([], () => false));
+        assert.equal(null, [2, 4, 6].singleOrDefault(x => x % 2 === 1));
+      });
+
+    it('should return the default if no element matches the lambda', () => {
+      assert.equal(10, [].singleOrDefault(10));
+      assert.equal(9, [2, 4, 6].singleOrDefault(x => x % 2 === 1, 9));
+    });
   });
 
   describe('#sum()', () => {
