@@ -1,7 +1,7 @@
 require('./List');
 const IndexOutOfBoundsException = require('./Exceptions').IndexOutOfBoundsException;
 const RequiredParameterException = require('./Exceptions').RequiredParameterException;
-const MultipeItemsMatchException = require('./Exceptions').MultipeItemsMatchException;
+const MultipleItemsMatchException = require('./Exceptions').MultipleItemsMatchException;
 const NoItemFoundException = require('./Exceptions').NoItemFoundException;
 
 /**
@@ -258,7 +258,6 @@ const sequenceEqual = function(array, otherArray,
   return true;
 };
 
-
 /**
  * Gets the element that matches the lambda, if no element or multiple element
  * match, it will throw an exception.
@@ -267,7 +266,7 @@ const sequenceEqual = function(array, otherArray,
  * @param {function} [evaluator=()=>true] the evaluator to determine which
  *                                        element to grab
  * @returns {*} the element that matched
- * @throws MultipeItemsMatchException
+ * @throws MultipleItemsMatchException
  * @throws NoItemFoundException
  */
 const single = function(array, evaluator = () => true) {
@@ -275,7 +274,7 @@ const single = function(array, evaluator = () => true) {
   for (const el of array) {
     if (evaluator(el)) {
       if (typeof returnVal !== 'undefined') {
-        throw new MultipeItemsMatchException();
+        throw new MultipleItemsMatchException();
       }
 
       returnVal = el;
@@ -298,7 +297,7 @@ const single = function(array, evaluator = () => true) {
  *                                        element to grab
  * @param {*} defaultVal the default value to return if no element matches
  * @returns {*} the element that matched
- * @throws MultipeItemsMatchException
+ * @throws MultipleItemsMatchException
  */
 const singleOrDefault = function(array, evaluator = () => true,
                                  defaultVal = null) {
@@ -317,6 +316,23 @@ const singleOrDefault = function(array, evaluator = () => true,
   }
 };
 
+// TODO: JSDoc
+const skipWhile = function*(array, evaluator) {
+  let foundMatch = false;
+  for (const [i, el] of array.enumerate()) {
+    if (!foundMatch && evaluator(el, i)) {
+      continue;
+    }
+    foundMatch = true;
+    yield el;
+  }
+};
+
+// TODO: JSDoc
+const skip = function*(array, elementsToSkip) {
+  yield* skipWhile(array, (el, i) => i < elementsToSkip);
+};
+
 /**
  * Sums the elements of the array using the given evaluator.
  *
@@ -331,6 +347,21 @@ const sum = function(array, evaluator = el => el) {
     total += evaluator(el);
   }
   return total;
+};
+
+// TODO: JSDoc
+const takeWhile = function*(array, evaluator) {
+  for (const [i, el] of array.enumerate()) {
+    if (!evaluator(el, i)) {
+      return;
+    }
+    yield el;
+  }
+};
+
+// TODO: JSDoc
+const take = function*(array, elementsToTake) {
+  yield* takeWhile(array, (el, i) => i < elementsToTake);
 };
 
 /**
@@ -354,22 +385,22 @@ const thenBy = function(array, evaluator) {
 /**
  * Spreads an ordered list out into a single list.
  *
- * @param {array} array the grouped array to spread out
+ * @param {array} source the grouped array to spread out or generator
  * @returns {array} the compressed array
  */
-const toList = function(array) {
-  const flatten = (arr, level) => {
+const toList = function(source) {
+  const flatten = (array, level) => {
     if (!level) {
-      return arr;
+      return array;
     }
 
     // Recursively flatten until we get to the base level.
-    return arr.reduce(
+    return array.reduce(
       (compressed, current) => compressed.concat(flatten(current, level - 1)),
       []);
   };
 
-  return flatten(array, array.orderingLevel);
+  return flatten(source, source.orderingLevel);
 };
 
 /**
@@ -526,7 +557,7 @@ Array.prototype.sequenceEqual = Array.prototype.sequenceEqual ||
  * @param {function} [evaluator=()=>true] the evaluator to determine which
  *                                        element to grab
  * @returns {*} the element that matched
- * @throws MultipeItemsMatchException
+ * @throws MultipleItemsMatchException
  * @throws NoItemFoundException
  */
 Array.prototype.single = Array.prototype.single || function(evaluator) {
@@ -542,12 +573,22 @@ Array.prototype.single = Array.prototype.single || function(evaluator) {
  *                                        element to grab
  * @param {*} defaultVal the default value to return if no element matches
  * @returns {*} the element that matched
- * @throws MultipeItemsMatchException
+ * @throws MultipleItemsMatchException
  */
 Array.prototype.singleOrDefault = Array.prototype.singleOrDefault ||
   function(evaluator, defaultVal) {
     return singleOrDefault(this, evaluator, defaultVal);
   };
+
+// TODO JSDOC
+Array.prototype.skip = Array.prototype.skip || function(elementsToSkip) {
+  return skip(this, elementsToSkip);
+};
+
+// TODO JSDOC
+Array.prototype.skipWhile = Array.prototype.skipWhile || function(evaluator) {
+  return skipWhile(this, evaluator);
+};
 
 /**
  * Sums the elements of the array using the given evaluator.
@@ -558,6 +599,16 @@ Array.prototype.singleOrDefault = Array.prototype.singleOrDefault ||
  */
 Array.prototype.sum = Array.prototype.sum || function(evaluator) {
   return sum(this, evaluator);
+};
+
+// TODO JSDOC
+Array.prototype.take = Array.prototype.take || function(elementsToTake) {
+  return take(this, elementsToTake);
+};
+
+// TODO JSDOC
+Array.prototype.takeWhile = Array.prototype.takeWhile || function(evaluator) {
+  return takeWhile(this, evaluator);
 };
 
 /**
@@ -604,7 +655,11 @@ module.exports = {
   sequenceEqual: sequenceEqual,
   single: single,
   singleOrDefault: singleOrDefault,
+  skip: skip,
+  skipWhile: skipWhile,
   sum: sum,
+  take: take,
+  takeWhile: takeWhile,
   thenBy: thenBy,
   toList: toList,
   where: where,

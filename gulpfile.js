@@ -51,4 +51,4 @@ gulp.task('codecov', ['lint', 'test'], () =>
     .pipe(codecov())
 );
 
-gulp.task('default', ['lint', 'test']);
+gulp.task('default', ['codecov']);

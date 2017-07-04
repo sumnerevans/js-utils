@@ -107,11 +107,11 @@ Array.prototype.sortBy = Array.prototype.sortBy || function(evaluator) {
  * @param {iterable} source an iterable object
  * @returns {array} the array from the generator function
  */
-const array = Array.from;
+const list = Array.from;
 
-array.enumerate = enumerate;
-array.remove = remove;
-array.reversed = reversed;
-array.sortBy = sortBy;
+list.enumerate = enumerate;
+list.remove = remove;
+list.reversed = reversed;
+list.sortBy = sortBy;
 
-module.exports = array;
+module.exports = list;

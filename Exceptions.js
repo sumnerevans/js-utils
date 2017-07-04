@@ -15,7 +15,7 @@ class RequiredParameterException extends Error {
       throw new Error('RequiredParameterException requires a parameter name');
     }
 
-    super(`Parameter ${paramName} must be specified.`);
+    super(`Parameter "${paramName}" must be specified.`);
   }
 }
 
@@ -41,14 +41,39 @@ class IndexOutOfBoundsException extends Error {
 }
 
 /**
+ * A parameter was invalid.
+ *
+ * @extends {Error}
+ * @class
+ */
+class InvalidParameterException extends Error {
+  /**
+   * Creates an InvalidParameterException
+   *
+   * @param {string} paramName the parameter name that was invalid
+   * @param {string} reason the reason the parameter was invalid
+   */
+  constructor(paramName, reason) {
+    if (typeof paramName === 'undefined') {
+      throw new RequiredParameterException('paramName');
+    }
+    if (typeof reason === 'undefined') {
+      throw new RequiredParameterException('reason');
+    }
+
+    super(`The parameter "${paramName}" was invalid. ${reason}`);
+  }
+}
+
+/**
  * There were multiple items which matched the expression.
  *
  * @extends {Error}
  * @class
  */
-class MultipeItemsMatchException extends Error {
+class MultipleItemsMatchException extends Error {
   /**
-   * Creates a MultipeItemsMatchException
+   * Creates a MultipleItemsMatchException
    */
   constructor() {
     super('There were multiple items which matched the expression');
@@ -72,7 +97,8 @@ class NoItemFoundException extends Error {
 
 module.exports = {
   IndexOutOfBoundsException: IndexOutOfBoundsException,
-  RequiredParameterException: RequiredParameterException,
-  MultipeItemsMatchException: MultipeItemsMatchException,
+  InvalidParameterException: InvalidParameterException,
+  MultipleItemsMatchException: MultipleItemsMatchException,
   NoItemFoundException: NoItemFoundException,
+  RequiredParameterException: RequiredParameterException,
 };

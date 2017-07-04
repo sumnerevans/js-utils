@@ -313,6 +313,25 @@ describe('Linq', () => {
     });
   });
 
+  describe('#skip()', () => {
+    it('should return everything after the first N elements from the array',
+      () => {
+        assert.deepEqual(list(gen.range(3, 100)),
+          list(list(gen.range(100)).skip(3)));
+
+        const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }, { a: 3 }];
+        assert.deepEqual([objArray[2], objArray[3]], list(objArray.skip(2)));
+      });
+  });
+
+  describe('#skipWhile()', () => {
+    it('should return the elements after the first non-match', () => {
+      const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }, { a: 3 }];
+      assert.deepEqual([objArray[2], objArray[3]],
+        list(objArray.skipWhile(x => x.a)));
+    });
+  });
+
   describe('#sum()', () => {
     it('should return the sum of the elements if no lambda is specified',
       () => {
@@ -325,6 +344,23 @@ describe('Linq', () => {
       assert.equal(0, list(gen.range(-4, 5)).sum(() => 0));
       assert.equal(120, [2, 4, 10].sum(x => x * x));
       assert.equal(10, [{ a: 3 }, { a: 7 }].sum(x => x.a));
+    });
+  });
+
+  describe('#take()', () => {
+    it('should return the first N elements from the array', () => {
+      assert.deepEqual([0, 1, 2], list(list(gen.range(100)).take(3)));
+
+      const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }];
+      assert.deepEqual([objArray[0], objArray[1]], list(objArray.take(2)));
+    });
+  });
+
+  describe('#takeWhile()', () => {
+    it('should return the elements until the lambda does not match', () => {
+      const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }, { a: 3 }];
+      assert.deepEqual([objArray[0], objArray[1]],
+        list(objArray.takeWhile(x => x.a)));
     });
   });
 
