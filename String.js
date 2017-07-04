@@ -50,6 +50,14 @@ const ord = function(str) {
 
 // Comparison Functions
 const comparers = {
+  /**
+   * Compares strings case insensitively.
+   *
+   * @param {string} a the first string to compare
+   * @param {string} b the second string to compare
+   * @returns {bool} whether or not the strings are the same (case
+   *                 insensitvely)
+   */
   ignoreCase: (a, b) => a.toLowerCase() === b.toLowerCase(),
 };
 
