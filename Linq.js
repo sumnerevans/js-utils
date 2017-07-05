@@ -235,6 +235,15 @@ const orderBy = function(array, evaluator) {
 };
 
 /**
+ * Selects elements from the array using the given selector.
+ *
+ * @param {array} array the array to select from
+ * @param {function} selector the function to use to select the elements
+ * @returns {array} the selected elements
+ */
+const select = (array, selector) => array.select(selector);
+
+/**
  * Compares the elements of the array using the given comparator.
  *
  * @param {array} array the first array to compare
@@ -316,7 +325,14 @@ const singleOrDefault = function(array, evaluator = () => true,
   }
 };
 
-// TODO: JSDoc
+/**
+ * Returns the elements of the array starting at the first element that does
+ * not match the evaluator.
+ *
+ * @param {array} array the array to get elements from
+ * @param {function} evaluator the evaluation function
+ * @returns {generator} the elements of the array
+ */
 const skipWhile = function*(array, evaluator) {
   let foundMatch = false;
   for (const [i, el] of array.enumerate()) {
@@ -328,7 +344,14 @@ const skipWhile = function*(array, evaluator) {
   }
 };
 
-// TODO: JSDoc
+/**
+ * Returns elements of the array starting at the Nth element.
+ *
+ * @param {array} array the array to get elements from
+ * @param {number} elementsToSkip (N) the number of elements to skip before
+ *                                starting to take
+ * @returns {generator} the elements of the array after the Nth
+ */
 const skip = function*(array, elementsToSkip) {
   yield* skipWhile(array, (el, i) => i < elementsToSkip);
 };
@@ -349,7 +372,14 @@ const sum = function(array, evaluator = el => el) {
   return total;
 };
 
-// TODO: JSDoc
+/**
+ * Returns the elements of the array until the first element that matches the
+ * evaluator.
+ *
+ * @param {array} array the array to get elements from
+ * @param {function} evaluator the evaluation function
+ * @returns {generator} the elements of the array
+ */
 const takeWhile = function*(array, evaluator) {
   for (const [i, el] of array.enumerate()) {
     if (!evaluator(el, i)) {
@@ -359,7 +389,13 @@ const takeWhile = function*(array, evaluator) {
   }
 };
 
-// TODO: JSDoc
+/**
+ * Returns elements first N elements of the array.
+ *
+ * @param {array} array the array to get elements from
+ * @param {number} elementsToTake (N) the number of elements to take
+ * @returns {generator} the elements of the array after the Nth
+ */
 const take = function*(array, elementsToTake) {
   yield* takeWhile(array, (el, i) => i < elementsToTake);
 };
@@ -537,6 +573,14 @@ Array.prototype.orderBy = Array.prototype.orderBy || function(evaluator) {
 };
 
 /**
+ * Selects elements from the array using the given selector.
+ *
+ * @param {function} selector the function to use to select the elements
+ * @returns {array} the selected elements
+ */
+Array.prototype.select = Array.prototype.select || Array.prototype.map;
+
+/**
  * Compares the elements of the array using the given comparator.
  *
  * @param {array} otherArray the second array to compare
@@ -580,12 +624,24 @@ Array.prototype.singleOrDefault = Array.prototype.singleOrDefault ||
     return singleOrDefault(this, evaluator, defaultVal);
   };
 
-// TODO JSDOC
+/**
+ * Returns elements of the array starting at the Nth element.
+ *
+ * @param {number} elementsToSkip the number of elements to skip before
+ *                                starting to take
+ * @returns {generator} the elements of the array after the Nth
+ */
 Array.prototype.skip = Array.prototype.skip || function(elementsToSkip) {
   return skip(this, elementsToSkip);
 };
 
-// TODO JSDOC
+/**
+ * Returns the elements of the array starting at the first element that does
+ * not match the evaluator.
+ *
+ * @param {function} evaluator the evaluation function
+ * @returns {generator} the elements of the array
+ */
 Array.prototype.skipWhile = Array.prototype.skipWhile || function(evaluator) {
   return skipWhile(this, evaluator);
 };
@@ -601,12 +657,23 @@ Array.prototype.sum = Array.prototype.sum || function(evaluator) {
   return sum(this, evaluator);
 };
 
-// TODO JSDOC
+/**
+ * Returns elements first N elements of the array.
+ *
+ * @param {number} elementsToTake (N) the number of elements to take
+ * @returns {generator} the elements of the array after the Nth
+ */
 Array.prototype.take = Array.prototype.take || function(elementsToTake) {
   return take(this, elementsToTake);
 };
 
-// TODO JSDOC
+/**
+ * Returns the elements of the array until the first element that matches the
+ * evaluator.
+ *
+ * @param {function} evaluator the evaluation function
+ * @returns {generator} the elements of the array
+ */
 Array.prototype.takeWhile = Array.prototype.takeWhile || function(evaluator) {
   return takeWhile(this, evaluator);
 };
@@ -652,6 +719,7 @@ module.exports = {
   max: max,
   min: min,
   orderBy: orderBy,
+  select: select,
   sequenceEqual: sequenceEqual,
   single: single,
   singleOrDefault: singleOrDefault,

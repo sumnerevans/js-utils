@@ -256,6 +256,35 @@ describe('Linq', () => {
     });
   });
 
+  describe('#select()', () => {
+    it('should select a single element', () => {
+      const stringArray = ['one', 'two', 'three'];
+      const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }];
+      assert.deepEqual([3, 3, 5], list(stringArray.select(s => s.length)));
+      assert.deepEqual([1, 2, null], list(objArray.select(o => o.a || null)));
+    });
+
+    it('should work with objects', () => {
+      const stringArray = ['one', 'two', 'three'];
+      const selected = linq.select(stringArray, s => {
+        return {
+          length: s.length,
+          content: s,
+        };
+      });
+      assert.deepEqual([{
+        length: 3,
+        content: 'one',
+      }, {
+        length: 3,
+        content: 'two',
+      }, {
+        length: 5,
+        content: 'three',
+      }], selected);
+    });
+  });
+
   describe('#sequenceEqual()', () => {
     it('should compare the individual elements of the array', () => {
       assert([1, 3, 5].sequenceEqual([1, 3, 5]));
