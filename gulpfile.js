@@ -8,7 +8,7 @@ const config = {
   linterWarningThreshold: 10,
   src: {
     js: '[!gulpfile]*.js',
-    tests: 'test/*.js',
+    tests: 'test/**/*.js',
     codecov: './coverage/lcov.info',
   },
 };
