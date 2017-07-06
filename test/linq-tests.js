@@ -16,6 +16,34 @@ const arrayDeepEqual = (expected, actual) => {
 };
 
 describe('Linq', () => {
+  describe('#all', () => {
+    it('should return true if all of the elements of the array match the evaluator',
+      () => {
+        assert([3, 6, 9, 15].all(x => x % 3 === 0));
+        assert([{ a: 3 }, { a: 3 }].all(x => x.a === 3));
+      });
+
+    it('should return false if at least one element does not match the evaluator',
+      () => {
+        assert(![3, 6, 9, 14].all(x => x % 3 === 0));
+        assert(![{ a: 3 }, { a: 3 }, { a: 2 }].all(x => x.a === 3));
+      });
+  });
+
+  describe('#any', () => {
+    it('should return true if any of the elements of the array match the evaluator',
+      () => {
+        assert([2, 4, 5, 15, 16].any(x => x % 3 === 0));
+        assert([{ a: 2 }, { a: 3 }, { a: 5 }].any(x => x.a === 3));
+      });
+
+    it('should return false if no element matches the evaluator',
+      () => {
+        assert(![20, 10, 4, 14].any(x => x % 3 === 0));
+        assert(![{ a: 2 }, { a: 1 }, { a: 5 }].any(x => x.a === 3));
+      });
+  });
+
   describe('#average()', () => {
     it('should return NaN when the array is empty', () => {
       assert(Number.isNaN([].average()));

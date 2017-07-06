@@ -5,6 +5,41 @@ const MultipleItemsMatchException = require('./Exceptions').MultipleItemsMatchEx
 const NoItemFoundException = require('./Exceptions').NoItemFoundException;
 
 /**
+ * Returns true if all of the elements of the array match the evaluator.
+ *
+ * @param {array} array the array to evaluate
+ * @param {function} evaluator the function to evaluate each element with
+ * @returns {bool} true if all of the elements match the evaluator, false
+ *                      otherwise
+ */
+const all = function(array, evaluator) {
+  for (const el of array) {
+    if (!evaluator(el)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Returns true if at least one of the elements in the array matches the
+ * evaluator.
+ *
+ * @param {array} array the array to evaluate
+ * @param {function} evaluator the function to evaluate each element with
+ * @returns {bool} true if at least one of the elements matches the evaluator,
+ *                      false otherwise
+ */
+const any = function(array, evaluator) {
+  for (const el of array) {
+    if (evaluator(el)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
  * Calaculate the average of the elements of the array using the given
  * evaluator.
  *
@@ -450,6 +485,29 @@ const toList = function(source) {
 const where = (array, evaluator) => array.where(evaluator);
 
 /**
+ * Returns true if all of the elements of the array match the evaluator.
+ *
+ * @param {function} evaluator the function to evaluate each element with
+ * @returns {bool} true if all of the elements match the evaluator, false
+ *                      otherwise
+ */
+Array.prototype.all = Array.prototype.all || function(evaluator) {
+  return all(this, evaluator);
+};
+
+/**
+ * Returns true if at least one of the elements in the array matches the
+ * evaluator.
+ *
+ * @param {function} evaluator the function to evaluate each element with
+ * @returns {bool} true if at least one of the elements matches the evaluator,
+ *                      false otherwise
+ */
+Array.prototype.any = Array.prototype.any || function(evaluator) {
+  return any(this, evaluator);
+};
+
+/**
  * Calaculate the average of the elements of the array using the given
  * evaluator.
  *
@@ -709,11 +767,19 @@ Array.prototype.toList = Array.prototype.toList || function() {
 Array.prototype.where = Array.prototype.where || Array.prototype.filter;
 
 module.exports = {
+  all: all,
+  any: any,
   average: average,
+  // TODO: contains
+  // TODO: count
+  // TODO: distinct
   elementAt: elementAt,
   elementAtOrDefault: elementAtOrDefault,
+  // TODO: except
   first: first,
   firstOrDefault: firstOrDefault,
+  // TODO: intersect
+  // TODO: join
   last: last,
   lastOrDefault: lastOrDefault,
   max: max,
@@ -730,5 +796,6 @@ module.exports = {
   takeWhile: takeWhile,
   thenBy: thenBy,
   toList: toList,
+  // TODO: union
   where: where,
 };
