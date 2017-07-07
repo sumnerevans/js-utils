@@ -11,6 +11,7 @@ describe('List', () => {
     };
     assert.deepEqual([1, 2, 3], list(generator()));
     assert.deepEqual(['t', 'e', 's', 't'], list('test'));
+    assert.deepEqual([], list());
   });
 
   describe('#enumerate()', () => {

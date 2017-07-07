@@ -107,7 +107,12 @@ Array.prototype.sortBy = Array.prototype.sortBy || function(evaluator) {
  * @param {iterable} source an iterable object
  * @returns {array} the array from the generator function
  */
-const list = Array.from;
+const list = function(source) {
+  if (!source) {
+    return [];
+  }
+  return Array.from(source);
+};
 
 list.enumerate = enumerate;
 list.remove = remove;

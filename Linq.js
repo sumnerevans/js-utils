@@ -53,6 +53,19 @@ const average = function(array, evaluator = el => el) {
 };
 
 /**
+ * Returns the number of elements of the array which match the evaluator.
+ *
+ * @param {array} array the array to evaluate
+ * @param {function} [evaluator=()=>true] function to determine whether or not
+ *                                        for an element to be included in the
+ *                                        count
+ * @returns {number} the number of elements where the evaluator is true
+ */
+const count = function(array, evaluator = () => true) {
+  return array.where(evaluator).length;
+};
+
+/**
  * Gets the element at the given index or blows up if the index is out of the
  * bounds of the array.
  *
@@ -520,6 +533,18 @@ Array.prototype.average = Array.prototype.average || function(evaluator) {
 };
 
 /**
+ * Returns the number of elements of the array which match the evaluator.
+ *
+ * @param {function} [evaluator=()=>true] function to determine whether or not
+ *                                        for an element to be included in the
+ *                                        count
+ * @returns {number} the number of elements where the evaluator is true
+ */
+Array.prototype.count = Array.prototype.count || function(evaluator) {
+  return count(this, evaluator);
+};
+
+/**
  * Gets the element at the given index or blows up if the index is out of the
  * bounds of the array.
  *
@@ -771,7 +796,7 @@ module.exports = {
   any: any,
   average: average,
   // TODO: contains
-  // TODO: count
+  count: count,
   // TODO: distinct
   elementAt: elementAt,
   elementAtOrDefault: elementAtOrDefault,

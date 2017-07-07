@@ -63,6 +63,19 @@ describe('Linq', () => {
     });
   });
 
+  describe('#count()', () => {
+    it('should return the length of the array if no evaluator is given', () => {
+      assert.equal(10, list(gen.range(10)).count());
+      assert.equal(0, list().count());
+    });
+
+    it('should return the number of elements in the array that match the given evaluator',
+      () => {
+        assert.equal(4, list(gen.range(10)).count(x => x % 3 === 0));
+        assert.equal(2, [{ a: 10 }, { a: 2 }, { a: 12 }].count(x => x.a > 5));
+      });
+  });
+
   describe('#elementAt()', () => {
     it('should throw an error when the element is not in bounds', () => {
       const intArray = list(gen.range(1, 7));
