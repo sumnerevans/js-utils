@@ -57,7 +57,7 @@ describe('String', () => {
       assert.equal(99, string.ord('c'));
     });
 
-    it('blow up if a single char is not given', () => {
+    it('should blow up if a single char is not given', () => {
       assert.throws('string'.ord,
         'String.ord expected a string of length 1.');
       assert.throws(''.ord,

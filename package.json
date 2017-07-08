@@ -10,6 +10,7 @@
     "browserify": "^14.4.0",
     "codecov": "^2.2.0",
     "eslint": "^4.1.1",
+    "eslint-plugin-mocha": "^4.11.0",
     "gulp": "^3.9.1",
     "gulp-codecov": "^3.0.1",
     "gulp-eslint": "^4.0.0",

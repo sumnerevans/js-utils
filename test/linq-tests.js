@@ -63,6 +63,22 @@ describe('Linq', () => {
     });
   });
 
+  describe('#contains()', () => {
+    it('should return true if the element is in the array using the lambda',
+      () => {
+        assert(list(gen.range(10)).contains(3));
+        const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }];
+        assert(objArray.contains({ a: 1 }, (a, b) => a.a === b.a));
+      });
+
+    it('should return false if the element is in the array using the lambda',
+      () => {
+        assert(!list(gen.range(10)).contains(30));
+        const objArray = [{ a: 1 }, { a: 2 }, { b: 3 }];
+        assert(!objArray.contains({ a: 4 }, (a, b) => a.a === b.a));
+      });
+  });
+
   describe('#count()', () => {
     it('should return the length of the array if no evaluator is given', () => {
       assert.equal(10, list(gen.range(10)).count());

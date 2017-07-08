@@ -52,6 +52,17 @@ const average = function(array, evaluator = el => el) {
   return array.sum(evaluator) / array.length;
 };
 
+// TODO: JSDoc
+const contains = function(array, element,
+                          equalityEvaluator = (a, b) => a === b) {
+  for (const el of array) {
+    if (equalityEvaluator(el, element)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 /**
  * Returns the number of elements of the array which match the evaluator.
  *
@@ -532,6 +543,12 @@ Array.prototype.average = Array.prototype.average || function(evaluator) {
   return average(this, evaluator);
 };
 
+// TODO: JSDoc
+Array.prototype.contains = Array.prototype.contains ||
+  function(element, equalityEvaluator) {
+    return contains(this, element, equalityEvaluator);
+  };
+
 /**
  * Returns the number of elements of the array which match the evaluator.
  *
@@ -795,7 +812,7 @@ module.exports = {
   all: all,
   any: any,
   average: average,
-  // TODO: contains
+  contains: contains,
   count: count,
   // TODO: distinct
   elementAt: elementAt,
