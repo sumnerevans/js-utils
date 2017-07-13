@@ -52,7 +52,15 @@ const average = function(array, evaluator = el => el) {
   return array.sum(evaluator) / array.length;
 };
 
-// TODO: JSDoc
+/**
+ * Determines if the array contains the given element.
+ *
+ * @param {array} array the array to inspect
+ * @param {*} element the element of the array to find
+ * @param {function} equalityEvaluator a function to compare the array elements
+ *                                     with the search element
+ * @returns {bool} whether or not the array contains the given element
+ */
 const contains = function(array, element,
                           equalityEvaluator = (a, b) => a === b) {
   for (const el of array) {
@@ -543,7 +551,14 @@ Array.prototype.average = Array.prototype.average || function(evaluator) {
   return average(this, evaluator);
 };
 
-// TODO: JSDoc
+/**
+ * Determines if the array contains the given element.
+ *
+ * @param {*} element the element of the array to find
+ * @param {function} equalityEvaluator a function to compare the array elements
+ *                                     with the search element
+ * @returns {bool} whether or not the array contains the given element
+ */
 Array.prototype.contains = Array.prototype.contains ||
   function(element, equalityEvaluator) {
     return contains(this, element, equalityEvaluator);
@@ -814,14 +829,10 @@ module.exports = {
   average: average,
   contains: contains,
   count: count,
-  // TODO: distinct
   elementAt: elementAt,
   elementAtOrDefault: elementAtOrDefault,
-  // TODO: except
   first: first,
   firstOrDefault: firstOrDefault,
-  // TODO: intersect
-  // TODO: join
   last: last,
   lastOrDefault: lastOrDefault,
   max: max,
@@ -838,6 +849,5 @@ module.exports = {
   takeWhile: takeWhile,
   thenBy: thenBy,
   toList: toList,
-  // TODO: union
   where: where,
 };

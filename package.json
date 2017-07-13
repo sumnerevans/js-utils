@@ -1,5 +1,7 @@
 {
   "name": "js-utils",
+  "main": "dist/js-utils",
+  "module": "src/index.js",
   "version": "0.1.0",
   "scripts": {
     "test": "gulp test",
@@ -20,7 +22,8 @@
     "gulp-mocha": "^3.0.1",
     "gulp-util": "^3.0.8",
     "istanbul": "^0.4.5",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "webpack": "^3.2.0"
   },
   "description": "Some helpful JavaScript prototype overloads.",
   "directories": {

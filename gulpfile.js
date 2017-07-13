@@ -7,8 +7,8 @@ const mocha = require('gulp-mocha');
 const config = {
   linterWarningThreshold: 10,
   src: {
-    js: '[!gulpfile]*.js',
-    tests: 'test/**/*.js',
+    js: 'src/[!gulpfile]*.js',
+    tests: 'src/test/**/*.js',
     codecov: './coverage/lcov.info',
   },
 };
