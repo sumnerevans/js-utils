@@ -1,10 +1,11 @@
-const assert = require('assert');
-const exceptions = require('../Exceptions');
-const IndexOutOfBoundsException = exceptions.IndexOutOfBoundsException;
-const InvalidParameterException = exceptions.InvalidParameterException;
-const MultipleItemsMatchException = exceptions.MultipleItemsMatchException;
-const NoItemFoundException = exceptions.NoItemFoundException;
-const RequiredParameterException = exceptions.RequiredParameterException;
+import assert from 'assert';
+import {
+  IndexOutOfBoundsException,
+  InvalidParameterException,
+  MultipleItemsMatchException,
+  NoItemFoundException,
+  RequiredParameterException,
+} from '../Exceptions';
 
 describe('IndexOutOfBoundsException', () => {
   it('should indicate the invald index', () => {

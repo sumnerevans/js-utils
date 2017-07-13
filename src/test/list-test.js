@@ -1,6 +1,6 @@
-const assert = require('assert');
-const list = require('../List');
-require('../String');
+import assert from 'assert';
+import list from '../List';
+import '../String';
 
 describe('List', () => {
   it('should convert an iterator to an array', () => {

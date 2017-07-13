@@ -1,6 +1,8 @@
-const assert = require('assert');
-const gen = require('../Generator');
-const list = require('../List');
+import assert from 'assert';
+import {
+  Generator as gen,
+  List as list,
+} from '../';
 
 describe('Generator', () => {
   describe('#range()', () => {

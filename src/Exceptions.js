@@ -4,7 +4,7 @@
  * @extends {Error}
  * @class
  */
-class RequiredParameterException extends Error {
+export class RequiredParameterException extends Error {
   /**
    * Creates a RequiredParameterException
    *
@@ -25,7 +25,7 @@ class RequiredParameterException extends Error {
  * @extends {Error}
  * @class
  */
-class IndexOutOfBoundsException extends Error {
+export class IndexOutOfBoundsException extends Error {
   /**
    * Creates an IndexOutOfBoundsException
    *
@@ -46,7 +46,7 @@ class IndexOutOfBoundsException extends Error {
  * @extends {Error}
  * @class
  */
-class InvalidParameterException extends Error {
+export class InvalidParameterException extends Error {
   /**
    * Creates an InvalidParameterException
    *
@@ -71,7 +71,7 @@ class InvalidParameterException extends Error {
  * @extends {Error}
  * @class
  */
-class MultipleItemsMatchException extends Error {
+export class MultipleItemsMatchException extends Error {
   /**
    * Creates a MultipleItemsMatchException
    */
@@ -86,7 +86,7 @@ class MultipleItemsMatchException extends Error {
  * @extends {Error}
  * @class
  */
-class NoItemFoundException extends Error {
+export class NoItemFoundException extends Error {
   /**
    * Creates a NoItemFoundException
    */
@@ -95,10 +95,10 @@ class NoItemFoundException extends Error {
   }
 }
 
-module.exports = {
-  IndexOutOfBoundsException: IndexOutOfBoundsException,
-  InvalidParameterException: InvalidParameterException,
-  MultipleItemsMatchException: MultipleItemsMatchException,
-  NoItemFoundException: NoItemFoundException,
-  RequiredParameterException: RequiredParameterException,
+export default {
+  IndexOutOfBoundsException,
+  InvalidParameterException,
+  MultipleItemsMatchException,
+  NoItemFoundException,
+  RequiredParameterException,
 };

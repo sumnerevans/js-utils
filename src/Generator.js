@@ -13,7 +13,7 @@
  *
  * @returns {generator} a generator for the range
  */
-const range = function*(begin, end, step) {
+export const range = function*(begin, end, step) {
   const start = typeof end === 'undefined' ? 0 : begin;
   const stop = end || begin;
   const increment = step || 1;
@@ -23,6 +23,6 @@ const range = function*(begin, end, step) {
   }
 };
 
-module.exports = {
+export default {
   range: range,
 };

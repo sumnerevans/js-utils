@@ -23,6 +23,7 @@
     "gulp-util": "^3.0.8",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
+    "mocha-webpack": "^0.7.0",
     "webpack": "^3.2.0"
   },
   "description": "Some helpful JavaScript prototype overloads.",

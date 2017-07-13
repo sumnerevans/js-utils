@@ -1,9 +1,11 @@
-const assert = require('assert');
-const gen = require('../Generator');
-const linq = require('../Linq');
-const list = require('../List');
-const string = require('../String');
-const util = require('../Util');
+import assert from 'assert';
+import {
+  Generator as gen,
+  Linq as linq,
+  List as list,
+  String as string,
+  Util as util,
+} from '../';
 
 const arrayDeepEqual = (expected, actual) => {
   for (const [i, x] of expected.enumerate()) {

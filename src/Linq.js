@@ -1,8 +1,10 @@
-require('./List');
-const IndexOutOfBoundsException = require('./Exceptions').IndexOutOfBoundsException;
-const RequiredParameterException = require('./Exceptions').RequiredParameterException;
-const MultipleItemsMatchException = require('./Exceptions').MultipleItemsMatchException;
-const NoItemFoundException = require('./Exceptions').NoItemFoundException;
+import './List';
+import {
+  IndexOutOfBoundsException,
+  RequiredParameterException,
+  MultipleItemsMatchException,
+  NoItemFoundException,
+} from './Exceptions';
 
 /**
  * Returns true if all of the elements of the array match the evaluator.
@@ -823,7 +825,7 @@ Array.prototype.toList = Array.prototype.toList || function() {
  */
 Array.prototype.where = Array.prototype.where || Array.prototype.filter;
 
-module.exports = {
+export default {
   all: all,
   any: any,
   average: average,

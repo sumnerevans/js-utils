@@ -94,7 +94,7 @@ String.prototype.ord = String.prototype.ord || function() {
   return ord(this);
 };
 
-module.exports = {
+export default {
   comparers: comparers,
   format: format,
   join: join,

@@ -1,14 +1,14 @@
 import Exceptions from './Exceptions';
-import Generators from './Generators';
+import Generator from './Generator';
 import Linq from './Linq';
 import List from './List';
 import Set from './Set';
 import String from './String';
 import Util from './Util';
 
-export default {
+export {
   Exceptions,
-  Generators,
+  Generator,
   Linq,
   List,
   Set,

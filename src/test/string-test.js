@@ -1,5 +1,5 @@
-const assert = require('assert');
-const string = require('../String');
+import assert from 'assert';
+import string from '../String';
 
 describe('String', () => {
   describe('comparers', () => {
