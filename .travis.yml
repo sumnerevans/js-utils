@@ -1,5 +1,5 @@
 language: node_js
 node_js:
   - "node"
-script:
-  - gulp codecov
+after_success:
+  - ./node_modules/.bin/codecov
