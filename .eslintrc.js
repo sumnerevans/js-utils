@@ -8,7 +8,7 @@ module.exports = {
   },
 
   plugins: [
-    // 'mocha',
+    'mocha',
   ],
 
   parserOptions: {
@@ -275,13 +275,13 @@ module.exports = {
     //
     // eslint-plugin-mocha
     //
-    // 'mocha/handle-done-callback': 2,
-    // 'mocha/no-global-tests': 2,
-    // 'mocha/no-identical-title': 2,
-    // 'mocha/no-pending-tests': 1,
-    // 'mocha/no-sibling-hooks': 2,
-    // 'mocha/valid-suite-description': [1, '.'],
-    // 'mocha/valid-test-description': [1, '^should\\s.+'],
+    'mocha/handle-done-callback': 2,
+    'mocha/no-global-tests': 2,
+    'mocha/no-identical-title': 2,
+    'mocha/no-pending-tests': 1,
+    'mocha/no-sibling-hooks': 2,
+    'mocha/valid-suite-description': [1, '.'],
+    'mocha/valid-test-description': [1, '^should\\s.+'],
   },
 
   globals: {},
